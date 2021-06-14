@@ -15,11 +15,23 @@ export class Vector2 {
    * @param {n} y
    */
   constructor(x, y) { this.set(x, y) }
+  /**
+   * @param {n} x
+   * @param {n} y
+   */
   set(x, y) { this.x = x; this.y = y }
+  /**
+   * @param {n} x
+   * @param {n} y
+   */
   add(x, y) { this.addX(x); this.addY(y) }
+  /** @param {n} x */
   addX(x) { this.#x += num(x) }
+  /** @param {n} y */
   addY(y) { this.#y += num(y) }
+  /** @param {n} x */
   set x(x) { this.#x = num(x) }
+  /** @param {n} y */
   set y(y) { this.#y = num(y) }
   get x() { return this.#x }
   get y() { return this.#y }
@@ -34,14 +46,30 @@ export class Vector3 {
    * @param {n} y
    * @param {n} z
    */
-  constructor(x, y) { this.set(x, y) }
+  constructor(x, y, z) { this.set(x, y, z) }
+  /**
+   * @param {n} x
+   * @param {n} y
+   * @param {n} z
+   */
   set(x, y, z) { this.x = x; this.y = y; this.z = z }
+  /**
+   * @param {n} x
+   * @param {n} y
+   * @param {n} z
+   */
   add(x, y, z) { this.addX(x); this.addY(y); this.addZ(z) }
+  /** @param {n} x */
   addX(x) { this.#x += num(x) }
+  /** @param {n} y */
   addY(y) { this.#y += num(y) }
+  /** @param {n} z */
   addZ(z) { this.#z += num(z) }
+  /** @param {n} x */
   set x(x) { this.#x = num(x) }
+  /** @param {n} y */
   set y(y) { this.#y = num(y) }
+  /** @param {n} z */
   set z(z) { this.#z = num(z) }
   get x() { return this.#x }
   get y() { return this.#y }
