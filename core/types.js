@@ -1,10 +1,8 @@
 //#region Types
-/**
- * @typedef {"string" | "number" | "bigint" | "boolean" |
- * "symbol" | "undefined" | "object" | "function"} allTypes
- */
+/** @typedef {"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"} allTypes */
 //#endregion
 
+/** Checks the element type */
 export default Object.freeze({
   /** @param {allTypes} type */
   type(value, type) { return type === typeof value },
@@ -18,10 +16,7 @@ export default Object.freeze({
   func(value) { return "function" === typeof value && value instanceof Function },
   array(value) { return Array.isArray(value) },
   NaN(value) { return "number" === typeof value && isNaN(value) },
-  /**
-   * Returns "TRUE" if the element being checked is an instance of the class
-   * @param {*} value
-   */
+  /** Returns "TRUE" if the element being checked is an instance of the class */
   nonZeroValue(value) { return !(value === undefined || value === null || value === 0 || NaN(value)) },
   notClass(value) { return value === undefined || value === null || value === globalThis }
 })
