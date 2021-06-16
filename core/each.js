@@ -1,4 +1,4 @@
-import is from "./types.js";
+import is from "./types.js"
 
 //#region Types
 /** @typedef {(value, index: number, array: any[]) => (void | boolean)} iterator */

@@ -7,14 +7,6 @@ import is from "./types.js"
  * @param {*} [source.]
  */
 export function Extend(obj, source) { return { ...obj, ...source } }
-// export function Extend(obj, source) {
-//   let x = {}
-//   if (is.obj(obj) && is.obj(source)) {
-//     each.obj(obj, (z, k) => { x[k] = z })
-//     each.obj(source, (z, k) => { x[k] = z })
-//   }
-//   return x
-// }
 /**
  * @param {Object} obj
  * @param {*} [obj.]
