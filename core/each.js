@@ -13,7 +13,7 @@ import is from "./types.js"
 export default function each(arr, fn) {
   if (!is.array(arr) || !is.func(fn)) return arr
   let i = -1, len = arr.length;
-  while (++i < len) if (fn(arr[i], i, array) === false) break;
+  while (++i < len) if (fn(arr[i], i, arr) === false) break;
   return arr
 }
 /**
