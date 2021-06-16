@@ -21,10 +21,11 @@ class XCore {
   }
   get version() { return this.#version }
 }
-export default new XCore
 
 XCore.define("is", is)
 XCore.define("each", each)
 XCore.define("Extend", Extend)
 XCore.define("Mixin", Mixin)
 XCore.define("Mono", Mono)
+
+export default new XCore
