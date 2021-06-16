@@ -4,9 +4,7 @@ import { Extend, Mixin, Mono } from "./object.js"
 
 class XCore {
   #version = "0.8"
-  has(source) {
-    return this.hasUtilsWithName(source) || this.hasOwnProperty(source)
-  }
+  has(source) { return this.hasUtilsWithName(source) }
   /** @param {string} name */
   hasUtilsWithName(name) { return is.str(name) && !!XCore.prototype[name] }
   /** @param {string} name */
