@@ -1,29 +1,20 @@
 import is from "./types.js"
-import each from "./each.js"
-import { Extend, Mixin, Mono } from "./object.js"
 
 class XCore {
-  #version = "0.8"
-  has(source) { return this.hasUtilsWithName(source) }
-  /** @param {string} name */
-  hasUtilsWithName(name) { return is.str(name) && !!XCore.prototype[name] }
-  /** @param {string} name */
-  define(name, value) { return XCore.define(name, value) }
-  /** @param {string} name */
+  static #version = "0.8"
+  static has(source) { return is.str(source) && !!XCore.prototype[source] }
   static define(name, value) {
+    if (XCore.has(name)) return value
     Object.defineProperty(XCore.prototype, name, {
       value: value, configurable: false,
       writable: false, enumerable: is.array(value)
-    })
-    return value
+    }); return value
   }
-  get version() { return this.#version }
+  /** @param {string} source */
+  has(source) { XCore.has(source) }
+  /** @param {string} name */
+  define(name, value) { return XCore.define(name, value) }
+  get version() { return XCore.#version }
 }
-
-XCore.define("is", is)
-XCore.define("each", each)
-XCore.define("Extend", Extend)
-XCore.define("Mixin", Mixin)
-XCore.define("Mono", Mono)
 
 export default new XCore
