@@ -1,0 +1,16 @@
+{
+  "name": "nonametitan_utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x-titan/utils.git"
+  },
+  "author": "nonametitan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/x-titan/utils/issues"
+  },
+  "homepage": "https://github.com/x-titan/utils#readme"
+}
