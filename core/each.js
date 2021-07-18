@@ -8,7 +8,6 @@ import is from "./types.js"
 /**
  * @param {Array} arr
  * @param {iterator} fn
- * @returns 
  */
 export default function each(arr, fn) {
   if (!is.array(arr) || !is.func(fn)) return arr
