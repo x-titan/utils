@@ -9,7 +9,7 @@ import is from "./types.js"
  * @param {Array} arr
  * @param {iterator} fn
  */
-export default function each(arr, fn) {
+function each(arr, fn) {
   if (!is.array(arr) || !is.func(fn)) return arr
   let i = -1, len = arr.length;
   while (++i < len) if (fn(arr[i], i, arr) === false) break;
@@ -20,9 +20,11 @@ export default function each(arr, fn) {
  * @param {*} [obj.]
  * @param {iteratorOBJ} fn
  */
-each.obj = function (obj, fn) {
+each.obj = (obj, fn) => {
   if (!is.obj(obj) || !is.func(fn)) return obj
   let keys = Object.keys(obj), i = -1, len = keys.length, k;
   while (++i < len) if (fn(obj[k = keys[i]], k, obj) === false) break;
   return obj
 }
+each = Object.freeze(each)
+export default each

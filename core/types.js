@@ -3,7 +3,7 @@
 //#endregion
 
 /** Checks the element type */
-export default Object.freeze({
+const is = Object.freeze({
   /** @param {allTypes} type */
   type(value, type) { return type === typeof value },
   /** @param {new} object */
@@ -20,3 +20,4 @@ export default Object.freeze({
   nonZeroValue(value) { return !(value === undefined || value === null || value === 0 || NaN(value)) },
   notClass(value) { return value === undefined || value === null || value === globalThis }
 })
+export default is

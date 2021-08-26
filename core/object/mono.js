@@ -1,23 +1,5 @@
-import is from "./types.js"
+import is from "../types.js"
 
-/**
- * @param {Object} obj
- * @param {*} [obj.]
- * @param {Object} source
- * @param {*} [source.]
- */
-export function Extend(obj, source) { return { ...obj, ...source } }
-/**
- * @param {Object} obj
- * @param {*} [obj.]
- * @param {Object} source
- * @param {*} [source.]
- */
-export function Mixin(obj, source) {
-  if (is.obj(obj) && is.obj(source))
-    each.obj(source, (z, k) => { obj[k] = is.func(z) ? z.bind(obj) : z })
-  return obj
-}
 const _listMono = new Set(["Mono"]), onerror_blank = () => {
   throw new Error("Objects of the Mono class must be in only one instance")
 }
@@ -31,7 +13,7 @@ const _listMono = new Set(["Mono"]), onerror_blank = () => {
  * @param {Function} onerror <-- Calling on error
  * @class
  */
-export function Mono(onerror) {
+function Mono(onerror) {
   if (is.notClass(this))
     throw new Error("This element is a class. Call 'new'")
   Mono.force(this, onerror)
@@ -58,3 +40,5 @@ Mono.force = (self, onerror) => {
   let x = self.constructor.name;
   if (_listMono.has(x)) onerror(); else _listMono.add(x)
 }
+Mono = Object.freeze(Mono)
+export default Mono
