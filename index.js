@@ -1,6 +1,6 @@
-import is from "./core/types.js"
 import each from "./core/each.js"
+import { List, Queue, Stack } from "./core/list/index.js"
 import { extend, mixin, Mono } from "./core/object/index.js"
-import { List, Stack, Queue } from "./core/list/index.js"
+import is from "./core/types.js"
 
-export { is, each, List, Stack, Queue, extend, mixin, Mono }
+export { each, List, Queue, Stack, extend, mixin, Mono, is }

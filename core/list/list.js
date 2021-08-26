@@ -14,16 +14,20 @@ const Item = Object.freeze(class Item {
 const List = Object.freeze(class List {
   /** @type {Item} */ #head
   /** @type {Item} */ #last
-  constructor() { /** @type {Item} */ this.#head = this.#last = null }
+  constructor() { this.#head = this.#last = null }
   unshift(value) {
-    this.#head = this.#head.prev = new Item(value, this.#head) // Maybe error
+    this.#head = this.#head.prev = new Item(value, this.#head)
     if (!this.#last) this.#last = this.#head
     return this
   }
   push(value) {
-    let x = new Item(value, null, this.#last)
+    let x = new Item(value)
+
     if (!this.#head) this.#head = this.#last = x
-    else this.#last = this.#last.next = x
+    else {
+      x.prev = this.#last
+      this.#last = this.#last.next = x
+    }
     return this
   }
   pop() {
@@ -70,6 +74,11 @@ const List = Object.freeze(class List {
     }
     this.#head = this.#last
     this.#last = x
+  }
+  toArray() {
+    let x = []
+    this.forEach(value => x.push(value))
+    return x
   }
   isEmpty() { return is.empty(this.#head) }
   get lenght() {
