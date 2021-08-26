@@ -2,9 +2,8 @@ import is from "../types.js"
 
 /**
  * @param {Object} obj
- * @param {*} [obj.]
  * @param {Object} source
- * @param {*} [source.]
+ * @returns {obj & source}
  */
 export default function mixin(obj, source) {
   if (is.obj(obj) && is.obj(source))

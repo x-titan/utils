@@ -1,7 +1,6 @@
 /**
  * @param {Object} obj
- * @param {*} [obj.]
  * @param {Object} source
- * @param {*} [source.]
+ * @returns {obj & source}
  */
 export default function extend(obj, source) { return { ...obj, ...source } }
