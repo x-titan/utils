@@ -1,3 +1,6 @@
+import each from "../each.js"
+import is from "../types.js"
+
 const Item = Object.freeze(class Item {
   /**
    * @param {*} value
@@ -16,8 +19,10 @@ const List = Object.freeze(class List {
   /** @type {Item} */ #last
   constructor() { this.#head = this.#last = null }
   unshift(value) {
-    this.#head = this.#head.prev = new Item(value, this.#head)
-    if (!this.#last) this.#last = this.#head
+    let x = new Item(value, this.#head)
+    if (this.#head) this.#head.prev = x
+    this.#head = x
+    if (!this.#last) this.#last = x
     return this
   }
   push(value) {
@@ -47,11 +52,15 @@ const List = Object.freeze(class List {
     } else this.#head = this.#last = null
     return x.value
   }
-  forEach(fn) {
+  /**
+   * @param {Function} fn
+   * @param {boolean} [stoppable]
+   */
+  forEach(fn, stoppable = true) {
     if (this.isEmpty() || !is.func(fn)) return this
     let i = 0, h = this.#head
     while (h) {
-      if (fn(h.value, i++, this) === false) break
+      if (fn(h.value, i++, this) === false && stoppable) break
       h = h.next
     }
     return this
@@ -62,6 +71,10 @@ const List = Object.freeze(class List {
       if (has = (v === value)) return false
     })
     return has
+  }
+  clear() {
+    this.#head = this.#last = null
+    return this
   }
   reverse() {
     if (this.isEmpty()) return
@@ -74,14 +87,22 @@ const List = Object.freeze(class List {
     }
     this.#head = this.#last
     this.#last = x
+    return this
   }
   toArray() {
     let x = []
     this.forEach(value => x.push(value))
     return x
   }
+  /** @param {Array} array */
+  fromArray(array) {
+    if (!is.array(array)) return this
+    this.clear()
+    each(array, this.push.bind(this), false)
+    return this
+  }
   isEmpty() { return is.empty(this.#head) }
-  get lenght() {
+  get length() {
     if (this.isEmpty()) return 0
     let i = 1, h = this.#head
     while (h.next && ++i) h = h.next
