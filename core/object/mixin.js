@@ -3,7 +3,7 @@ import is from "../types.js"
 /**
  * @param {Object} obj
  * @param {Object} source
- * @returns {obj & source}
+ * @return {obj & source}
  */
 export default function mixin(obj, source) {
   if (is.obj(obj) && is.obj(source))
