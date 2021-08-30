@@ -1,6 +1,6 @@
-//#region Types
+// #region Types
 /** @typedef {"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"} allTypes */
-//#endregion
+// #endregion
 
 /** Checks the element type */
 const is = Object.freeze({
@@ -15,7 +15,7 @@ const is = Object.freeze({
   /** @return {value is string} */
   str(value) { return "string" === typeof value || value instanceof String },
   /** @return {value is object} */
-  obj(value) { return "obj" === typeof value && value instanceof Object },
+  obj(value) { return "object" === typeof value && value instanceof Object },
   /** @return {value is boolean} */
   bool(value) { return "boolean" === typeof value || value instanceof Boolean },
   /** @return {value is Function} */

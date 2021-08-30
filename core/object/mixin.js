@@ -1,3 +1,4 @@
+import each from "../each.js"
 import is from "../types.js"
 
 /**
