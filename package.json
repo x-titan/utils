@@ -1,6 +1,6 @@
 {
   "name": "titan_web",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -12,5 +12,5 @@
   "bugs": {
     "url": "https://github.com/x-titan/utils/issues"
   },
-  "homepage": "https://github.com/x-titan/utils#readme",
+  "homepage": "https://github.com/x-titan/utils#readme"
 }
