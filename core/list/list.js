@@ -24,10 +24,8 @@ const List = Object.freeze(
       if (!this.last) this.last = x
       return this
     }
-
     push(value) {
       const x = new Item(value)
-
       if (!this.head) this.head = this.last = x
       else {
         x.prev = this.last
@@ -35,7 +33,6 @@ const List = Object.freeze(
       }
       return this
     }
-
     pop() {
       const x = this.last
       if (this.last.prev) {
@@ -44,7 +41,6 @@ const List = Object.freeze(
       } else this.head = this.last = null
       return x.value
     }
-
     shift() {
       const x = this.head
       if (this.head.next) {
@@ -53,7 +49,6 @@ const List = Object.freeze(
       } else this.head = this.last = null
       return x.value
     }
-
     /**
      * @param {Function} fn
      * @param {boolean} [stoppable]
@@ -67,18 +62,15 @@ const List = Object.freeze(
       }
       return this
     }
-
     has(value) {
       let has = false
       this.forEach(v => !(has = (v === value)))
       return has
     }
-
     clear() {
       this.head = this.last = null
       return this
     }
-
     reverse() {
       if (this.isEmpty()) return
       let t, h;
@@ -92,13 +84,11 @@ const List = Object.freeze(
       this.head = this.last
       return this
     }
-
     toArray() {
       const x = []
       this.forEach(value => x.push(value))
       return x
     }
-
     /** @param {Array} array */
     fromArray(array) {
       if (!is.array(array)) return this
@@ -106,9 +96,7 @@ const List = Object.freeze(
       each(array, this.push.bind(this), false)
       return this
     }
-
     isEmpty() { return is.empty(this.head) }
-
     get length() {
       if (this.isEmpty()) return 0
       let i = 1, h = this.head
@@ -117,5 +105,4 @@ const List = Object.freeze(
     }
   }
 )
-
 export default List

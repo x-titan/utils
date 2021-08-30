@@ -35,5 +35,4 @@ const Stack = Object.freeze(
     get length() { return this.#list.length }
   }
 )
-
 export default Stack

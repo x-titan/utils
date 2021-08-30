@@ -35,5 +35,4 @@ const Queue = Object.freeze(
     get length() { return this.#list.length }
   }
 )
-
 export default Queue
