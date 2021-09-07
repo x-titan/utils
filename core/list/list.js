@@ -1,18 +1,20 @@
 import each from "../each.js"
 import is from "../types.js"
 
-const Item = Object.freeze(class Item {
-  /**
-   * @param {*} value
-   * @param {Item} next
-   * @param {Item} prev
-   */
-  constructor(value, next = null, prev = null) {
-    this.value = value
-    this.next = next
-    this.prev = prev
+const Item = Object.freeze(
+  class Item {
+    /**
+     * @param {*} value
+     * @param {Item} next
+     * @param {Item} prev
+     */
+    constructor(value, next = null, prev = null) {
+      this.value = value
+      this.next = next
+      this.prev = prev
+    }
   }
-})
+)
 
 const List = Object.freeze(
   class List {
@@ -64,7 +66,10 @@ const List = Object.freeze(
     }
     has(value) {
       let has = false
-      this.forEach(v => !(has = (v === value)))
+      this.forEach(v => {
+        if (v === value) 
+          return !(has = true)
+      })
       return has
     }
     clear() {

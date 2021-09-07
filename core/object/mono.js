@@ -1,4 +1,4 @@
-import is from "../types"
+import is from "../types.js"
 
 const _listMono = new Set(["Mono"]), onerror_ = () => {
   throw new Error("Objects of the Mono class must be in only one instance")
