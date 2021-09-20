@@ -11,7 +11,7 @@ import is from "./types.js"
  * @param {boolean} [stoppable]
  */
 export default function each(arr, fn, stoppable = true) {
-  if (!is.array(arr) || !is.func(fn)) return arr
+  if (!is.obj(arr) && arr[Symbol.iterator] || !is.func(fn)) return arr
   const len = arr.length
   let i = -1
   if (stoppable) while (++i < len) {
