@@ -12,7 +12,11 @@ export default function extend(obj, ...source) {
   }, false)
   return obj
 }
-
+/**
+ * @param {Object} obj
+ * @param {Object} source
+ * @return {obj & source}
+ */
 extend.pro = (obj, ...source) => {
   if (is.obj(obj)) each(source, s => {
     if (is.obj(s)) each.obj(s, (z, k) =>
