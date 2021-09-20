@@ -36,4 +36,3 @@ each.obj = (obj, fn, stoppable = true) => {
   else while (++i < len) fn(obj[k = keys[i]], k, obj)
   return obj
 }
-each([], () => { })
