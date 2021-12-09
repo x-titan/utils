@@ -1,85 +1,49 @@
 import { extend } from "./object/extend.js"
 
-const isNull = value => value === null
-const isObj = value => typeof value === 'object';
 const isOfType = type => value => typeof value === type
-const isEmpty = value => value === undefined || value === null
 const toStr = value => Object.prototype.toString.call(value)
-const getType = (value) => typeof value
+const getType = value => typeof value
 const getObjName = () => {
   const x = toStr(value).slice(8, -1)
   if (x) return x
   return null
 }
-const getInstance = (value, type) => getObjName(value) === type
-
-function is_(value) {
-  if (isNull(value)) return "null"
-  return getType(value)
-}
+const getProto = Object.getPrototypeOf
+const instance = (value, type) => getObjName(value) === type
+const voidObj = {}
 
 const _ = {
-  empty: isEmpty,
-  null_: value => value === null,
-  undefined: isOfType("undefined"),
-  str: isOfType("string"),
+  empty: value => value === undefined || value === null,
+  null: value => value === null,
+  null_: _.null,
+  undefined: value => value === undefined,
+  nonZeroValue: value => !(value === undefined || value === null || value === 0 || _.nan(value)),
+
   num: isOfType("number"),
-  bool: value => value === true || value === false,
+  str: isOfType("string"),
   func: isOfType("function"),
-  class_: value => _.func(value) && toStr(value).startsWith('class '),
   symbol: isOfType('symbol'),
-  array: Array.isArray,
+  bool: value => value === true || value === false,
+  obj: value => !_.empty(value) && (_.func(value) || typeof value === "object"),
+
+  class: value => _.func(value) && toStr(value).startsWith('class '),
+  class_: _.class,
+  notClass: value => _.empty(value) || value === globalThis,
+  plainObj: value => _.obj(value) && getObjName(value) === "Object" && (value = getProto(value), value === null || value === getProto(voidObj)),
+
   int: value => Number.isInteger(value),
   infinity: value => value === Infinity || value === -Infinity,
+  safeInt: value => Number.isSafeInteger(value),
   nan: value => "number" === typeof value && isNaN(value),
-  arrayLike: value => {
-    return !_.empty(value) && !_.func(value) && value.length > -1
-  }
+  NaN: _.nan,
+
+  array: Array.isArray,
+  arrayLike: value => !_.empty(value) && !_.func(value) && _.int(value) && value.length > -1,
+  iterable: value => !_.empty(value) && _.func(value[Symbol.iterator])
 }
-
-
-
-
-
-
-
-
-
-
-/** Checks the element type */
-const is = Object.freeze({
-  /** @param {allTypes} type */
-  type(value, type) { return type === typeof value },
-  /** @param {new} object */
-  instance(value, object) { return value instanceof object },
-  /** @return {value is (undefined | null)} */
-  empty(value) { return value === undefined || value === null },
-  /** @return {value is number} */
-  num(value) { return "number" === typeof value || value instanceof Number },
-  /** @return {value is string} */
-  str(value) { return "string" === typeof value || value instanceof String },
-  /**
-   * @param {unknown} value
-   * @return {value is object}
-   */
-  obj(value) { return "object" === typeof value && value instanceof Object },
-  /** @return {value is boolean} */
-  bool(value) { return "boolean" === typeof value || value instanceof Boolean },
-  /** @return {value is Function} */
-  func(value) { return "function" === typeof value && value instanceof Function },
-  /** @return {value is Array} */
-  array(value) { return Array.isArray(value) },
-  NaN(value) { return "number" === typeof value && isNaN(value) },
-  /** Returns "TRUE" if the element being checked is an instance of the class */
-  nonZeroValue(value) { return !(value === undefined || value === null || value === 0 || NaN(value)) },
-  /** @return {value is (undefined | null | globalThis)} */
-  notClass(value) { return value === undefined || value === null || value === globalThis },
-  /** 
-   * @param {unknown} v alue
-   * @return {value is Class<value>}
-   */
-  class_(value) {
-    return isType(value, "function") && value.toString().startsWith('class ')
-  }
-})
+const is = Object.freeze(extend.pro(
+  value => {
+    if (value === null) return "null"
+    return getType(value)
+  }, _))
 export default is
