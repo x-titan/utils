@@ -30,7 +30,7 @@ declare namespace is {
   function plainObj(value: unknown): boolean
   function array(value: any): value is any[]
   function arrayLike(value: any): value is any[]
-  function iterable(value: unknown): value is Iterable
+  function iterable(value: any): value is Iterable<any>
   function nan(value: unknown): boolean
   function NaN(value: unknown): boolean
   function int(value: unknown): value is number

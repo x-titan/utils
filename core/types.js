@@ -1,4 +1,4 @@
-import { extend } from "./object/extend.js"
+import extend from "./object/extend.js"
 
 const isOfType = type => value => typeof value === type
 const toStr = value => Object.prototype.toString.call(value)
@@ -9,13 +9,12 @@ const getObjName = () => {
   return null
 }
 const getProto = Object.getPrototypeOf
-const instance = (value, type) => getObjName(value) === type
 const voidObj = {}
 
 const _ = {
   empty: value => value === undefined || value === null,
   null: value => value === null,
-  null_: _.null,
+  null_: this.null,
   undefined: value => value === undefined,
   nonZeroValue: value => !(value === undefined || value === null || value === 0 || _.nan(value)),
 
