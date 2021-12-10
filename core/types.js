@@ -1,20 +1,18 @@
-import extend from "./object/extend.js"
-
+const { freeze, assign, getPrototypeOf } = Object
 const isOfType = type => value => typeof value === type
-const toStr = value => Object.prototype.toString.call(value)
-const getType = value => typeof value
 const getObjName = () => {
-  const x = toStr(value).slice(8, -1)
+  const x = Object.prototype.toString.call(value).slice(8, -1)
   if (x) return x
   return null
 }
-const getProto = Object.getPrototypeOf
-const voidObj = {}
-
+const objProto = getPrototypeOf({})
+const getType = value => {
+  if (value === null) return "null"
+  return typeof value
+}
 const _ = {
   empty: value => value === undefined || value === null,
   null: value => value === null,
-  null_: this.null,
   undefined: value => value === undefined,
   nonZeroValue: value => !(value === undefined || value === null || value === 0 || _.nan(value)),
 
@@ -25,24 +23,22 @@ const _ = {
   bool: value => value === true || value === false,
   obj: value => !_.empty(value) && (_.func(value) || typeof value === "object"),
 
-  class: value => _.func(value) && toStr(value).startsWith('class '),
-  class_: _.class,
+  class: value => _.func(value) && value.toString().startsWith('class '),
   notClass: value => _.empty(value) || value === globalThis,
-  plainObj: value => _.obj(value) && getObjName(value) === "Object" && (value = getProto(value), value === null || value === getProto(voidObj)),
+  plainObj: value => _.obj(value) && getObjName(value) === "Object" && (value = getPrototypeOf(value), value === null || value === objProto),
 
   int: value => Number.isInteger(value),
   infinity: value => value === Infinity || value === -Infinity,
   safeInt: value => Number.isSafeInteger(value),
   nan: value => "number" === typeof value && isNaN(value),
-  NaN: _.nan,
 
   array: Array.isArray,
   arrayLike: value => !_.empty(value) && !_.func(value) && _.int(value) && value.length > -1,
   iterable: value => !_.empty(value) && _.func(value[Symbol.iterator])
 }
-const is = Object.freeze(extend.pro(
-  value => {
-    if (value === null) return "null"
-    return getType(value)
-  }, _))
+const is = freeze(assign(getType, _, {
+  null_: _.null,
+  class_: _.class,
+  NaN: _.nan,
+}))
 export default is
