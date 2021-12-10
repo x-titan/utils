@@ -1,7 +1,7 @@
-export interface Class<T = unknown> {
-  new(...args: any[]): T;
+interface Class<T = unknown> {
+  new(...args: any[]): T
 }
-export declare const enum TypeName {
+declare const enum TypeName {
   null = "null",
   boolean = "boolean",
   undefined = "undefined",
@@ -12,7 +12,7 @@ export declare const enum TypeName {
   Array = "Array",
   Object = "Object"
 }
-// declare function is(value: unknown): TypeName;
+// declare function is(value: unknown): TypeName
 declare namespace is {
   function empty(value: unknown): value is undefined | null
   function undefined(value: unknown): value is undefined
@@ -37,4 +37,4 @@ declare namespace is {
   function safeInt(value: unknown): value is number
   function infinite(value: unknown): boolean
 }
-export default is
+export = is
