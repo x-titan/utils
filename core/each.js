@@ -11,7 +11,6 @@ import is from "./types.js"
  * @param {boolean} [stoppable]
  */
 export default function each(arr, fn, stoppable = true) {
-  console.log(arr, arr.length)
   if (!arr?.[Symbol.iterator] || !is.func(fn)) return arr
   const len = arr.length
   let i = -1
