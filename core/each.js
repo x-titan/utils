@@ -12,12 +12,11 @@ import is from "./types.js"
  */
 export default function each(arr, fn, stoppable = true) {
   if (!arr?.[Symbol.iterator] || !is.func(fn)) return arr
-  const len = arr.length
-  let i = -1
-  if (stoppable) while (++i < len) {
+  let i = arr.length
+  if (stoppable) while (i--) {
     if (fn(arr[i], i, arr) === false) break
   }
-  else while (++i < len) fn(arr[i], i, arr)
+  else while (i--) fn(arr[i], i, arr)
   return arr
 }
 /**
@@ -28,11 +27,11 @@ export default function each(arr, fn, stoppable = true) {
  */
 each.obj = (obj, fn, stoppable = true) => {
   if (!is.obj(obj) || !is.func(fn)) return obj
-  const keys = Object.keys(obj), len = keys.length;
-  let i = -1, k;
-  if (stoppable) while (++i < len) {
+  const keys = Object.keys(obj)
+  let i = keys.length, k;
+  if (stoppable) while (i--) {
     if (fn(obj[k = keys[i]], k, obj) === false) break
   }
-  else while (++i < len) fn(obj[k = keys[i]], k, obj)
+  else while (i--) fn(obj[k = keys[i]], k, obj)
   return obj
 }

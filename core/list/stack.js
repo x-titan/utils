@@ -5,16 +5,18 @@ const Stack = Object.freeze(
     #list
     constructor() { this.#list = new List() }
     set(value) {
-      this.#list.push(value)
+      this.#list.unshift(value)
       return this
     }
-    get() { return this.#list.pop() }
+    get() { return this.#list.shift().value }
     /**
      * @param {Function} fn
      * @param {boolean} [stoppable]
      */
-    forEach(fn, stoppable) {
-      this.#list.forEach(fn, stoppable || true)
+    each(fn, stoppable) {
+      this.#list.each((node, index) => {
+        fn(node.value, index)
+      }, stoppable || true)
       return this
     }
     clear() {

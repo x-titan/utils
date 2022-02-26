@@ -1,113 +1,197 @@
 import each from "../each.js"
 import is from "../types.js"
 
-const Item = Object.freeze(
-  class Item {
-    /**
-     * @param {*} value
-     * @param {Item} next
-     * @param {Item} prev
-     */
-    constructor(value, next = null, prev = null) {
-      this.value = value
-      this.next = next
-      this.prev = prev
-    }
+const { freeze } = Object
+const corner = "+"
+const horBorder = "—"
+const verBorder = "|"
+const space = " "
+const n = "\n"
+const width = 46
+const LongHorBorder = corner + horBorder.repeat(width) + corner
+const LongSpace = verBorder + space.repeat(width) + verBorder
+function box(value) {
+  value = value.replace(n, "\\n")
+  if (value.length > width) value = value.slice(0, width - 5) + "..."
+  return LongSpace + n + verBorder + space + value +
+    space.repeat(width - value.length - 1) + verBorder + n +
+    LongSpace + n + LongHorBorder
+}
+class Node {
+  /** @type {Node} */
+  #node
+  /** @param {Node} node */
+  constructor(value, node = null) {
+    this.value = value
+    this.node = node
   }
-)
-
-const List = Object.freeze(
+  set node(value) {
+    if (value instanceof Node || value === null)
+      this.#node = value
+  }
+  get node() { return this.#node }
+  toString() { return "" + this.value }
+}
+const List = freeze(
   class List {
-    constructor() { this.head = this.last = null }
-    unshift(value) {
-      const x = new Item(value, this.head)
-      if (this.head) this.head.prev = x
-      this.head = x
-      if (!this.last) this.last = x
-      return this
+    /** @type {Node} */ #node = null
+    set node(node) {
+      if (List.isNode(node) || node === null) this.#node = node
     }
-    push(value) {
-      const x = new Item(value)
-      if (!this.head) this.head = this.last = x
-      else {
-        x.prev = this.last
-        this.last = this.last.next = x
-      }
-      return this
+    get node() { return this.#node }
+    get length() {
+      let curr = this.node, i = 0
+      while (curr) { curr = curr.node; i++ }
+      return i
     }
-    pop() {
-      const x = this.last
-      if (this.last.prev) {
-        this.last = this.last.prev
-        this.last.next = null
-      } else this.head = this.last = null
-      return x.value
+    isEmpty() { return !this.#node }
+    /** @param {Node} node */
+    push(node) {
+      node = List.newNode(node)
+      if (this.isEmpty()) return this.node = node
+      let curr = this.node
+      while (curr.node) curr = curr.node
+      return curr.node = node
+    }
+    /** @param {Node} node */
+    unshift(node) {
+      node = List.newNode(node)
+      node.node = this.node
+      this.node = node
+      return node
     }
     shift() {
-      const x = this.head
-      if (this.head.next) {
-        this.head = this.head.next
-        this.head.prev = null
-      } else this.head = this.last = null
-      return x.value
+      if (!this.node) return null
+      const head = this.node
+      this.node = this.node.node
+      head.node = null
+      return head
+    }
+    pop() {
+      if (this.isEmpty()) return null
+      let curr = this.node, prev = curr
+      if (!curr.node) {
+        this.node = null
+        return curr
+      }
+      while (curr.node) {
+        prev = curr
+        curr = curr.node
+      }
+      prev.node = null
+      return curr
     }
     /**
-     * @param {Function} fn
-     * @param {boolean} [stoppable]
+     * @param {(node:Node,index:number)=>void} fn
+     * @param {boolean} stoppable
      */
-    forEach(fn, stoppable = true) {
-      if (this.isEmpty() || !is.func(fn)) return this
-      let i = 0, h = this.head
-      while (h) {
-        if (fn(h.value, i++, this) === false && stoppable) break
-        h = h.next
+    each(fn, stoppable = false) {
+      if (this.isEmpty()) return this
+      let curr = this.#node, index = 0
+      while (curr) {
+        if (fn(curr, index++) === false && stoppable) break
+        curr = curr.node
       }
       return this
     }
+    /** @param {Node} node */
+    hasNode(value) {
+      let res = false
+      this.each(node => !(res = (node === value)))
+      return res
+    }
     has(value) {
-      let has = false
-      this.forEach(v => {
-        if (v === value) 
-          return !(has = true)
-      })
-      return has
+      let res = false
+      this.each(node => !(res = (node.value === value)))
+      return res
     }
     clear() {
-      this.head = this.last = null
+      this.node = null
       return this
     }
     reverse() {
-      if (this.isEmpty()) return
-      let t, h;
-      this.last = h = this.head
-      while (h) {
-        t = h.prev
-        h.prev = h.next
-        h.next = t
-        h = h.prev
+      if (this.isEmpty()) return this
+      let curr = this.#node, temp = null, prev = null
+      while (curr) {
+        temp = curr.node
+        curr.node = prev
+        prev = curr
+        curr = temp
       }
-      this.head = this.last
-      return this
+      this.#node = prev
+      return this;
     }
     toArray() {
-      const x = []
-      this.forEach(value => x.push(value))
-      return x
+      const arr = []
+      this.each(node => arr.push(node.value))
+      return arr
     }
-    /** @param {Array} array */
     fromArray(array) {
       if (!is.array(array)) return this
       this.clear()
-      each(array, this.push.bind(this), false)
+      let head = new Node(), last = head
+      each(array, value => last = last.node = new Node(value))
+      this.#node = head.node
       return this
     }
-    isEmpty() { return is.empty(this.head) }
-    get length() {
-      if (this.isEmpty()) return 0
-      let i = 1, h = this.head
-      while (h.next && ++i) h = h.next
-      return i
+    findByValue(value) {
+      if (this.isEmpty()) return
+      const { isNode } = List
+      let curr = this.node
+      while (isNode(curr)) {
+        if (curr.value === value) break
+        curr = curr.node
+      }
+      return curr
     }
+    removeFromIndex(index) {
+      if (this.isEmpty() || index < 0) return null
+      if (index === 0) return this.shift()
+      const { isNode } = List
+      let curr = this.node, prev, i = 0
+      while (isNode(curr)) {
+        if (index === i) {
+          prev.node = curr.node
+          curr.node = null
+          return curr
+        }
+        prev = curr
+        curr = curr.node
+        i++
+      }
+      return null
+    }
+    removeFromValue(value) {
+      if (this.isEmpty()) return null
+      let curr = this.node, prev
+      while (isNode(curr)) {
+        if (value === curr.value) {
+          prev.node = curr.node
+          curr.node = null
+          return curr
+        }
+        prev = curr
+        curr = curr.node
+      }
+      return null
+    }
+    print() {
+      this.each(console.log)
+      return this
+    }
+    toTable(title = "LinkedList") {
+      let res = LongHorBorder + n + box(title)
+      this.each((x, i) => res += n + box(i + " -> " + x.value))
+      return res
+    }
+    toString() { return "[List node:" + this.node.toString() + "]" }
+    static isList(list) { return list instanceof List }
+    static isNode(node) { return node instanceof Node }
+    static newNode(node) {
+      if (!List.isNode(node)) node = new Node(node)
+      return node
+    }
+    static toString() { return "class List{ [native code] }" }
   }
 )
 export default List
