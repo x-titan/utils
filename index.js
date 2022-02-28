@@ -8,4 +8,4 @@ import { CONSTANTS } from "./core/math/index.js"
 
 Object.freeze(CONSTANTS)
 
-export { is }
+export { is, CONSTANTS }
