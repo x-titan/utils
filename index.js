@@ -1,4 +1,4 @@
-export * from "./core/each.js"
+import each from "./core/each.js"
 export * from "./core/list/index.js"
 export * from "./core/loop.js"
 export * from "./core/math/index.js"
@@ -8,4 +8,4 @@ import { CONSTANTS } from "./core/math/index.js"
 
 Object.freeze(CONSTANTS)
 
-export { is, CONSTANTS }
+export { is, each, CONSTANTS }
