@@ -25,16 +25,20 @@ extend.pro = (obj, ...source) => {
   }, false)
   return obj
 }
-
-extend._ = function extend_(obj) {
-  Array.prototype.slice.call(arguments, 1).forEach(source => {
-    let descriptor, prop;
-    if (source) {
-      for (prop in source) {
-        descriptor = Object.getOwnPropertyDescriptor(source, prop);
-        Object.defineProperty(obj, prop, descriptor);
+/**
+ * @param {Object} obj
+ * @param {Object} source
+ * @returns {obj & source}
+ */
+extend._ = function extend_(obj, ...source) {
+  each(source, s => {
+    let descriptor, prop
+    if (s) {
+      for (prop in s) {
+        descriptor = Object.getOwnPropertyDescriptor(s, prop)
+        Object.defineProperty(obj, prop, descriptor)
       }
     }
-  });
-  return obj;
+  })
+  return obj
 }

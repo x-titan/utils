@@ -1,4 +1,4 @@
-export default class Matrix {
+export class Matrix {
   constructor() {
     throw new Error("The class Matrix is not embedded")
   }

@@ -1,17 +1,16 @@
 {
   "name": "titan_web",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/x-titan/utils.git"
   },
-  "author": "nonametitan",
+  "author": "x-titan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/x-titan/utils/issues"
   },
-  "homepage": "https://github.com/x-titan/utils#readme",
-  "dependencies": {}
+  "homepage": "https://github.com/x-titan/utils#readme"
 }

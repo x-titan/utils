@@ -2,7 +2,7 @@ const { seal, freeze } = Object
 const { sqrt } = Math
 const isNum = n => typeof n === "number" || n instanceof Number
 
-const notImp = name => new Error(name + " is not implemented")
+const notImp = name => new Error("Method " + name + " is not implemented")
 const AXIS = Symbol("axis")
 const X = 0
 const Y = 1
@@ -194,19 +194,6 @@ export class Vector3 extends Vector {
   set z(z) { this[AXIS][Z] = z || 0 }
   len() { return AVector.len3D(this) }
 }
-//#endregion
-
-//#region Vector constants
-export const VECTOR_CONSTANTS = freeze({
-  ZERO: new AVector(0, 0, 0),
-  ONE: new AVector(1, 1, 1),
-  LEFT: new AVector(-1, 0, 0),
-  RIGHT: new AVector(1, 0, 0),
-  FORWARD: new AVector(0, -1, 0),
-  BACK: new AVector(0, 1, 0),
-  TOP: new AVector(0, 0, -1),
-  BOTTOM: new AVector(0, 0, -1)
-})
 //#endregion
 
 //#region Export functions

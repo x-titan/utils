@@ -9,5 +9,10 @@ declare namespace extend {
   function pro<T, U, V, W>(target: T, source1: U, source2: V, source3: W): T
   function pro<T, U, V, W, X>(target: T, source1: U, source2: V, source3: W, source4: X): T
   function pro(target: any, ...sources: any[]): any
+  function _<T, U>(target: T, source: U): T
+  function _<T, U, V>(target: T, source1: U, source2: V): T
+  function _<T, U, V, W>(target: T, source1: U, source2: V, source3: W): T
+  function _<T, U, V, W, X>(target: T, source1: U, source2: V, source3: W, source4: X): T
+  function _(target: any, ...sources: any[]): any
 }
 export = extend
