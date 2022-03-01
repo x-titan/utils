@@ -1,5 +1,3 @@
-import { Vector } from "./math/vector.js"
-import { List, Queue, Stack } from "./list/index.js"
 const { freeze, assign, getPrototypeOf: getProto } = Object
 const isOfType = type => value => typeof value === type
 const getObjName = () => {
@@ -47,11 +45,7 @@ const _ = {
     !_.func(value) &&
     _.int(value) &&
     value.length > -1,
-  iterable: value => !_.empty(value) && _.func(value[Symbol.iterator]),
-  vector: value => value instanceof Vector,
-  list: value => value instanceof List,
-  queue: value => value instanceof Queue,
-  stack: value => value instanceof Stack
+  iterable: value => !_.empty(value) && _.func(value[Symbol.iterator])
 }
 freeze(assign(is, _, {
   null_: _.null,

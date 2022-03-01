@@ -8,9 +8,11 @@ import is from "../types.js"
  * @param {obj} self
  */
 export default function binder(obj, paramList, self = obj) {
-  if (is.empty(obj) || !is.array(paramList)) throw new Error("Bad argument")
+  if (is.empty(obj) || !is.array(paramList))
+    throw new Error("Bad argument")
   each(paramList, name => {
-    if (is.str(name) && is.func(obj[name])) obj[name] = obj[name].bind(self)
+    if (is.str(name) && is.func(obj[name]))
+      obj[name] = obj[name].bind(self)
   })
   return obj
 }

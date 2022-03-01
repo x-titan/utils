@@ -1,8 +1,8 @@
 import is from "./types.js"
 
 // #region Types
-/** @typedef {(value, index: number, array: any[]) => (void | boolean)} iterator */
-/** @typedef {(value, name: string) => (void | boolean)} iteratorOBJ */
+/** @typedef {(value, index: number, array: any[]) => void} iterator */
+/** @typedef {(value, name: string) => void} iteratorOBJ */
 // #endregion
 
 /**

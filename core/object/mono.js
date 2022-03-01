@@ -34,7 +34,8 @@ const Mono = Object.freeze(
     static force(self, onerror) {
       if (!is.obj(self)) throw new TypeError("Bad Object")
       if (!is.func(onerror)) onerror = onerror_
-      if (_listMono.has(self = self.constructor.name)) onerror(); else _listMono.add(self)
+      if (_listMono.has(self = self.constructor.name)) onerror()
+      else _listMono.add(self)
     }
   }
 )
