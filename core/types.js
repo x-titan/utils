@@ -1,6 +1,8 @@
 const { freeze, assign, getPrototypeOf: getProto } = Object
+const { isInteger, isSafeInteger } = Number
+const { iterator } = Symbol
 const isOfType = type => value => typeof value === type
-const getObjName = () => {
+const getObjName = value => {
   const x = Object.prototype.toString.call(value).slice(8, -1)
   if (x) return x
   return null
@@ -15,37 +17,39 @@ const _ = {
   null: value => value === null,
   undefined: value => value === undefined,
   nonZeroValue: value => !(value === undefined ||
-    value === null || value === 0 || _.nan(value)),
+    value === null || value === 0 || _.nan(value)) ||
+    ((_.str(value) || _.arrayLike(value)) && value.length !== 0),
 
-  num: isOfType("number"),
+  num: value => typeof value === "number" && isFinite(value),
   str: isOfType("string"),
   func: isOfType("function"),
   symbol: isOfType('symbol'),
-  bool: value => value === true || value === false,
+  bool: value => value === !!value,
   obj: value => !_.empty(value) &&
-    (_.func(value) ||
-      typeof value === "object"),
+    (_.func(value) || typeof value === "object"),
 
   class: value => _.func(value) && ("" + value).startsWith('class '),
   notClass: value => _.empty(value) || value === globalThis,
   plainObj: value => _.obj(value) && getObjName(value) === "Object" &&
     (value = getProto(value), value === null || value === plainProto),
+  error: value => value instanceof Error,
+  argument: value => _.arrayLike(value) &&
+    getObjName(value) === "argument",
 
-  int: Number.isInteger,
-  decimal: value => _.num(value) && value % 1 !== 0,
+  int: isInteger,
+  decimal: value => _.num(value) && value * 10 % 1 === 0,
+  float: value => _.num(value) && value % 1 !== 0,
   positive: value => _.num(value) && value > 0,
   negative: value => _.num(value) && value < 0,
-  finite: value => _.num(value) && !_.infinity(value) && !_.nan(value),
+  finite: isFinite,
   infinity: value => value === Infinity || value === -Infinity,
-  safeInt: value => _.num(value) && Number.isSafeInteger(value),
+  safeInt: isSafeInteger,
   nan: value => "number" === typeof value && isNaN(value),
 
   array: Array.isArray,
-  arrayLike: value => !_.empty(value) &&
-    !_.func(value) &&
-    _.int(value) &&
-    value.length > -1,
-  iterable: value => !_.empty(value) && _.func(value[Symbol.iterator])
+  arrayLike: value => _.obj(value) &&
+    _.int(value.length) && value.length > -1,
+  iterable: value => !_.empty(value) && _.func(value[iterator])
 }
 freeze(assign(is, _, {
   null_: _.null,

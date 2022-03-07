@@ -28,8 +28,11 @@ declare namespace is {
   /** @deprecated {0.0.4} */
   function notClass(value: unknown): boolean
   function plainObj(value: unknown): boolean
+  function error(value: unknown): value is Error
+  function argument(value: unknown): boolean
   function int(value: unknown): value is number
   function decimal(value: unknown): value is number
+  function float(value: unknown): value is number
   function positive(value: unknown): value is number
   function negative(value: unknown): value is number
   function finite(value: unknown): value is number
