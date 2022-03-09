@@ -15,4 +15,4 @@ declare namespace extend {
   function _<T, U, V, W, X>(target: T, source1: U, source2: V, source3: W, source4: X): T
   function _(target: any, ...sources: any[]): any
 }
-export = extend
+export default extend

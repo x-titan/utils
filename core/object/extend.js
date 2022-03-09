@@ -1,22 +1,12 @@
 import each from "../each.js"
 import is from "../types.js"
 
-/**
- * @param {Object} obj
- * @param {Object} source
- * @return {obj & source}
- */
 export default function extend(obj, ...source) {
   if (is.obj(obj)) each(source, s => {
     if (is.obj(s)) each.obj(s, (z, k) => obj[k] = z)
   }, false)
   return obj
 }
-/**
- * @param {Object} obj
- * @param {Object} source
- * @return {obj & source}
- */
 extend.pro = (obj, ...source) => {
   if (is.obj(obj)) each(source, s => {
     if (is.obj(s)) each.obj(s, (z, k) =>
@@ -25,11 +15,6 @@ extend.pro = (obj, ...source) => {
   }, false)
   return obj
 }
-/**
- * @param {Object} obj
- * @param {Object} source
- * @returns {obj & source}
- */
 extend._ = function extend_(obj, ...source) {
   each(source, s => {
     let descriptor, prop

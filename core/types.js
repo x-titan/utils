@@ -2,23 +2,26 @@ const { freeze, assign, getPrototypeOf: getProto } = Object
 const { isInteger, isSafeInteger } = Number
 const { iterator } = Symbol
 const isOfType = type => value => typeof value === type
-const getObjName = value => {
-  const x = Object.prototype.toString.call(value).slice(8, -1)
-  if (x) return x
-  return null
-}
-const plainProto = getProto({})
+const toString = Object.prototype.toString.call
+const getObjName = value => toString(value).slice(8, -1) || null
+const plainProto = {}.constructor
 const is = value => {
   if (value === null) return "null"
+  switch (getObjName(value)) {
+    case "Array": return "array"
+    case "Map": return "map"
+    case "Set": return "set"
+    case "Error": return "error"
+  }
   return typeof value
 }
 const _ = {
   empty: value => value === undefined || value === null,
   null: value => value === null,
   undefined: value => value === undefined,
-  nonZeroValue: value => !(value === undefined ||
-    value === null || value === 0 || _.nan(value)) ||
-    ((_.str(value) || _.arrayLike(value)) && value.length !== 0),
+  nonZeroValue: value => !(_.empty(value) || value === 0 ||
+    _.nan(value)) || ((_.str(value) || _.arrayLike(value)) &&
+      value.length !== 0),
 
   num: value => typeof value === "number" && isFinite(value),
   str: isOfType("string"),
@@ -31,7 +34,7 @@ const _ = {
   class: value => _.func(value) && ("" + value).startsWith('class '),
   notClass: value => _.empty(value) || value === globalThis,
   plainObj: value => _.obj(value) && getObjName(value) === "Object" &&
-    (value = getProto(value), value === null || value === plainProto),
+    (value = value.constructor, value === null || value === plainProto),
   error: value => value instanceof Error,
   argument: value => _.arrayLike(value) &&
     getObjName(value) === "argument",
@@ -53,8 +56,8 @@ const _ = {
 }
 freeze(assign(is, _, {
   null_: _.null,
+  undefined_: _.undefined,
   class_: _.class,
-  NaN: _.nan,
-  vec: _.vector,
+  NaN: _.nan
 }))
 export default is
