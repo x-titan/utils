@@ -36,12 +36,12 @@ declare namespace is {
   function positive(value: unknown): value is number
   function negative(value: unknown): value is number
   function finite(value: unknown): value is number
-  function infinite(value: unknown): value is infinity
+  function infinite(value: unknown): boolean
   function safeInt(value: unknown): value is number
   function nan(value: unknown): boolean
   function NaN(value: unknown): boolean
-  function array(value: any): value is any[]
-  function arrayLike(value: any): value is any[]
-  function iterable(value: any): value is Iterable<any>
+  function array<T>(value: unknown): value is T[]
+  function arrayLike<T>(value: unknown): value is T[]
+  function iterable<T>(value: unknown): value is Iterable<T>
 }
 export default is

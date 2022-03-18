@@ -1,10 +1,10 @@
-const { freeze, assign, getPrototypeOf: getProto } = Object
+const { freeze, assign } = Object
+const { toString } = Object.prototype
 const { isInteger, isSafeInteger } = Number
-const { iterator } = Symbol
+const { iterator, toStringTag } = Symbol
+const objCons = {}.constructor
 const isOfType = type => value => typeof value === type
-const toString = Object.prototype.toString.call
-const getObjName = value => toString(value).slice(8, -1) || null
-const plainProto = {}.constructor
+const getObjName = value => toString.call(value).slice(8, -1) || null
 const is = value => {
   if (value === null) return "null"
   switch (getObjName(value)) {
@@ -20,24 +20,22 @@ const _ = {
   null: value => value === null,
   undefined: value => value === undefined,
   nonZeroValue: value => !(_.empty(value) || value === 0 ||
-    _.nan(value)) || ((_.str(value) || _.arrayLike(value)) &&
-      value.length !== 0),
+    ((_.str(value) || _.arrayLike(value)) && value.length === 0)),
 
-  num: value => typeof value === "number" && isFinite(value),
+  num: value => isFinite(value),
   str: isOfType("string"),
   func: isOfType("function"),
   symbol: isOfType('symbol'),
   bool: value => value === !!value,
-  obj: value => !_.empty(value) &&
-    (_.func(value) || typeof value === "object"),
+  obj: value => !_.empty(value) && typeof value === "object",
 
   class: value => _.func(value) && ("" + value).startsWith('class '),
   notClass: value => _.empty(value) || value === globalThis,
   plainObj: value => _.obj(value) && getObjName(value) === "Object" &&
-    (value = value.constructor, value === null || value === plainProto),
+    (value = value.constructor, value === null || value === objCons),
   error: value => value instanceof Error,
   argument: value => _.arrayLike(value) &&
-    getObjName(value) === "argument",
+    getObjName(value) === "Arguments",
 
   int: isInteger,
   decimal: value => _.num(value) && value * 10 % 1 === 0,
@@ -52,12 +50,15 @@ const _ = {
   array: Array.isArray,
   arrayLike: value => _.obj(value) &&
     _.int(value.length) && value.length > -1,
-  iterable: value => !_.empty(value) && _.func(value[iterator])
+  iterable: value => !_.empty(value) && _.func(value[iterator]),
 }
 freeze(assign(is, _, {
   null_: _.null,
   undefined_: _.undefined,
   class_: _.class,
-  NaN: _.nan
+  NaN: _.nan,
+  [toStringTag]: "is",
+  toString,
+  constructor: null
 }))
 export default is
