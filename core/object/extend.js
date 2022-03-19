@@ -16,14 +16,14 @@ extend.pro = (obj, ...source) => {
   return obj
 }
 extend._ = function extend_(obj, ...source) {
-  each(source, s => {
-    let descriptor, prop
-    if (s) {
-      for (prop in s) {
-        descriptor = Object.getOwnPropertyDescriptor(s, prop)
-        Object.defineProperty(obj, prop, descriptor)
-      }
-    }
-  })
+  if (is.obj(obj) || is.func(obj))
+    each(source, s => {
+      let descriptor, prop
+      if (is.obj(s) || is.func(s))
+        for (prop in s) {
+          descriptor = Object.getOwnPropertyDescriptor(s, prop)
+          Object.defineProperty(obj, prop, descriptor)
+        }
+    })
   return obj
 }

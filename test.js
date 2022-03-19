@@ -1,4 +1,5 @@
-import { is } from "./index.js"
+import extend from "./core/object/extend.js"
+import is from "./core/types.js"
 
 const test = (value, tobe) => {
   if (value !== tobe) throw new Error("Wrong")
@@ -79,3 +80,16 @@ test(is.obj(alpha), false)
 test(is.obj(A), false)
 test(is.obj(null), false)
 test(is.obj(undefined), false)
+
+const a = {
+  a: "a",
+  f() { console.log(this) }
+}
+const b = {
+  b: "b",
+  fn() { console.log(this) }
+}
+const c = extend(a, b)
+console.dir(a.f)
+c.f()
+c.fn()
