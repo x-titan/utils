@@ -11,7 +11,7 @@ import is from "./types.js"
  * @param {boolean} [stoppable]
  */
 export default function each(arr, fn, stoppable = true) {
-  if (!arr?.[Symbol.iterator] || !is.func(fn)) return arr
+  if (!is.arrayLike(arr) || !is.func(fn)) return arr
   let i = arr.length
   if (stoppable) while (i--) {
     if (fn(arr[i], i, arr) === false) break
@@ -26,7 +26,7 @@ export default function each(arr, fn, stoppable = true) {
  * @param {boolean} [stoppable]
  */
 each.obj = (obj, fn, stoppable = true) => {
-  if (!is.obj(obj) || !is.func(fn)) return obj
+  if (!(is.obj(obj) || is.func(obj)) || !is.func(fn)) return obj
   const keys = Object.keys(obj)
   let i = keys.length, k;
   if (stoppable) while (i--) {
