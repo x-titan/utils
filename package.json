@@ -3,6 +3,8 @@
   "version": "0.0.74",
   "description": "",
   "main": "index.js",
+  "private": true,
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/x-titan/utils.git"
