@@ -1,9 +1,8 @@
 {
   "name": "titan_web",
-  "version": "0.0.74",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "private": true,
   "type": "module",
   "repository": {
     "type": "git",
