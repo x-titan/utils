@@ -16,7 +16,6 @@ function isOfType(type) {
 function getObjName(value) {
   return toString.call(value).slice(8, -1) || null;
 }
-
 const _ = {
   empty: value => value === undefined || value === null,
   null: value => value === null,

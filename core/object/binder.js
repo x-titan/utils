@@ -8,7 +8,7 @@ import is from "../types.js"
  * @param {obj} self
  */
 export default function binder(obj, paramList, self = obj) {
-  if (is.empty(obj) || !is.array(paramList))
+  if (is.empty(obj) || !is.arrayLike(paramList))
     throw new Error("Bad argument")
   each(paramList, name => {
     if (is.str(name) && is.func(obj[name]))
