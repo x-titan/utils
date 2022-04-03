@@ -46,3 +46,4 @@ export default function range(start, stop, step) {
     throw new Error("Reverse step error")
   return baseRange(start, stop, step)
 }
+Array.range = range

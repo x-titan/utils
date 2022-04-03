@@ -9,7 +9,7 @@ const isObj = value => is.obj(value) || is.func(value)
 
 export default function extend(obj, ...source) {
   if (isObj(obj)) each(source, s => {
-    if (is.obj(s)) each.obj(s, (z, k) => obj[k] = z)
+    if (is.obj(s)) each.obj(s, (z, k) => obj[k] = z, false)
   }, false)
   return obj
 }

@@ -13,7 +13,9 @@ export const CONST = {
   /** @type {1.6180339887498948} */
   PHI: (1 + sqrt(5)) / 2,
   /** @type {1.4142135623730951} */
-  SQRT2
+  SQRT2: SQRT2 || Math.sqrt(2),
+  /** @type {2.220446049250313e-16} */
+  EPSILON: Number.EPSILON || 2 ** -52
 }
 Object.freeze(CONST)
 export function validNumber(value) {
@@ -52,3 +54,17 @@ export function constraints(value, min, max) {
   if (value > max) return max
   return value
 }
+
+export function equals(a, b) {
+  if (a === b)
+    return a !== 0 || 1 / a === 1 / b
+  return a !== a && b !== b
+}
+
+//#region Polifill
+Number.validNumber = validNumber
+if (!is.num(Number.EPSILON))
+  Number.EPSILON = CONST.EPSILON
+if (!is.num(Math.SQRT2))
+  Number.SQRT2 = CONST.SQRT2
+//#endregion

@@ -69,5 +69,4 @@ class Mono {
   }
 }
 const constructorList = new Set([Mono])
-
 export default Mono

@@ -1,11 +1,12 @@
 import is from "../types.js"
 
+const proxyRand = Math.random
 /** @param {number} [seed] */
 export function randomSeed(seed) {
   const _random = is.num(seed) ? () => {
     seed = (seed * 9301 + 49297) % 233280
     return seed / 233280
-  } : Math.random
+  } : proxyRand
   return function (min = 0, max = 1) {
     if (!is.num(min)) min = 0
     if (!is.num(max)) {
@@ -32,3 +33,9 @@ export const random = randomSeed()
 export function randInt(start, end) {
   return Math.round(random(start, end))
 }
+
+//#region Polifill
+Math.random = random
+Math.randomSeed = randomSeed
+Math.randInt = randInt
+//#endregion

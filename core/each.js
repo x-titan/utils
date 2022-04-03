@@ -35,3 +35,4 @@ each.obj = (obj, fn, stoppable = true) => {
   else while (i--) fn(obj[k = keys[i]], k, obj)
   return obj
 }
+Array.each = each
