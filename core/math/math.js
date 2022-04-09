@@ -60,9 +60,11 @@ export function equals(a, b) {
     return a !== 0 || 1 / a === 1 / b
   return a !== a && b !== b
 }
-
 //#region Polifill
 Number.validNumber = validNumber
+Math.normalizer = normalizer
+Math.constraints = constraints
+Math.equals = equals
 if (!is.num(Number.EPSILON))
   Number.EPSILON = CONST.EPSILON
 if (!is.num(Math.SQRT2))

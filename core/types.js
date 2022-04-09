@@ -70,7 +70,7 @@ const _ = {
   nonZeroValue: value => !(_.empty(value) || value === 0 ||
     ((_.str(value) || _.arrayLike(value)) && value.length === 0)),
 
-  num: isFinite,
+  num: value => typeof value === "number" && isFinite,
   str: isOfType("string"),
   func: isOfType("function"),
   genFunc: value => _.func(value) &&
@@ -95,7 +95,7 @@ const _ = {
   float: value => _.num(value) && value % 1 !== 0,
   positive: value => _.num(value) && value > 0,
   negative: value => _.num(value) && value < 0,
-  finite: isFinite,
+  finite: value => _.num(value),
   infinity: value => value === Infinity || value === -Infinity,
   safeInt: isSafeInteger,
   nan: value => "number" === typeof value && isNaN(value),

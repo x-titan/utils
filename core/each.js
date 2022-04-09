@@ -11,12 +11,19 @@ import is from "./types.js"
  * @param {boolean} [stoppable]
  */
 export default function each(arr, fn, stoppable = true) {
-  if (!is.arrayLike(arr) || !is.func(fn)) return arr
-  let i = arr.length
-  if (stoppable) while (i--) {
-    if (fn(arr[i], i, arr) === false) break
-  }
-  else while (i--) fn(arr[i], i, arr)
+  if (!is.func(fn))
+    throw new TypeError("Second argument not be function")
+  if (is.iterable(arr)) {
+    let i = 0
+    for (const item of arr)
+      if (fn(item, i, arr) === false
+        && stoppable === true) break
+  } else if (is.arrayLike(arr)) {
+    let i = arr.length
+    while (i--)
+      if (fn(item, i, arr) === false
+        && stoppable === true) break
+  } else throw new TypeError("First argument not be iterable")
   return arr
 }
 /**
