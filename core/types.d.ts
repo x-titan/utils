@@ -43,5 +43,6 @@ declare namespace is {
   function array<T>(value: unknown): value is T[]
   function arrayLike<T>(value: unknown): value is T[]
   function iterable<T>(value: unknown): value is Iterable<T>
+  function any(exec: (value: unknown) => boolean, ...list: unknown[]): boolean
 }
 export default is
