@@ -43,6 +43,10 @@ declare namespace is {
   function array<T>(value: unknown): value is T[]
   function arrayLike<T>(value: unknown): value is T[]
   function iterable<T>(value: unknown): value is Iterable<T>
+  function makeValidator(
+    exec: (value: unknown) => boolean,
+    onerror: (value: unknown, exec: Function) => TypeError
+  ): (value: unknown) => TypeError
   function any(exec: (value: unknown) => boolean, ...list: unknown[]): boolean
 }
 export default is

@@ -26,16 +26,25 @@ function makeValidator(valid, onerror) {
   }
   switch (typeof valid) {
     case "function":
-      return value => valid(value) === false && onerror(value, valid)
+      return value => {
+        if (valid(value) === false)
+          throw onerror(value, valid)
+      }
     case "string":
-      return value => is(value) !== valid && onerror(value, is)
+      return value => {
+        if (is(value) !== valid)
+          throw onerror(value, is)
+      }
     default:
       if (!warnedMakeValidator) {
         warnedMakeValidator = true
-        console.warn("Type of `valid = " + valid
-          + "` not supported or undefined. Using `is.nonZeroValue`.")
+        console.warn("Type of `valid = " + valid +
+          "` not supported or undefined. Using `is.nonZeroValue`.")
       }
-      return value => _.zeroValue(value) && onerror(value, _.nonZeroValue)
+      return value => {
+        if (_.zeroValue(value))
+          throw onerror(value, _.nonZeroValue)
+      }
   }
 }
 function any(exec, ...list) {
