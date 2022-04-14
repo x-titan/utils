@@ -16,7 +16,7 @@ export default function each(arr, fn, stoppable = true) {
   if (is.iterable(arr)) {
     let i = 0
     for (const item of arr)
-      if (fn(item, i, arr) === false
+      if (fn(item, i++, arr) === false
         && stoppable === true) break
   } else if (is.arrayLike(arr)) {
     let i = arr.length
