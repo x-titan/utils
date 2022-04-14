@@ -3,7 +3,7 @@ import is from "../types.js"
 import { validNumber } from "./math.js"
 import range from "./range.js"
 
-const _ = (a, b, c) => a * b / c
+let warnedXYEquals = false
 const numsLen = (...nums) => {
   let len = 0
   each(nums, (n) => {
@@ -24,7 +24,10 @@ export function eachRatio(x, y) {
   validNumber.all(x, y)
   const list = []
   if (x === y) {
-    console.warn("Ratio warn: x and y the equals. x: " + x + " y: " + y)
+    if (!warnedXYEquals) {
+      warnedXYEquals = true
+      console.warn("Ratio warn: x and y the equals. x: " + x + " y: " + y)
+    }
     list.push({ x, y }, { x: 1, y: 1 })
     return list
   }
