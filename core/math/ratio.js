@@ -1,6 +1,6 @@
 import each from "../each.js"
 import is from "../types.js"
-import { validNumber } from "./math.js"
+import { validateNumber } from "./math.js"
 import range from "./range.js"
 
 let warnedXYEquals = false
@@ -21,7 +21,7 @@ export function ratio(x, y, w, h) {
   if (!is.num(h)) return y * w / x
 }
 export function eachRatio(x, y) {
-  validNumber.all(x, y)
+  validateNumber.any(x, y)
   const list = []
   if (x === y) {
     if (!warnedXYEquals) {

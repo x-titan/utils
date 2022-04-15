@@ -2,8 +2,8 @@ import is from "../types.js"
 
 const makeError = name => {
   throw new Error(
-    "Objects of the Mono class must be in only one instance. " +
-    "This class " + name + " has already been used")
+    "Objects of the `Mono` class must be in only one instance. " +
+    "This class `" + name + "` has already been used")
 }
 /**
  * Сhecks whether this item is in the list and returns the result.
@@ -17,12 +17,12 @@ class Mono {
   /** @param {Function} onerror Calling on error */
   constructor(onerror) {
     const target = new.target
-    if (constructorList.has(target))
+    if (ctorList.has(target))
       return is.func(onerror) ? onerror() : makeError(target.name)
-    constructorList.add(target)
+    ctorList.add(target)
   }
   /** @param {new unknown} target */
-  static has(target) { return constructorList.has(target) }
+  static has(target) { return ctorList.has(target) }
   /**
    * Сhecks whether this item is in the list and returns the result.
    * After checking, it is added to the list.
@@ -40,7 +40,7 @@ class Mono {
     const cons = target.constructor
     if (this.has(cons))
       return is.func(onerror) ? onerror() : makeError(cons.name)
-    constructorList.add(cons)
+    ctorList.add(cons)
     return target
   }
   /**
@@ -49,8 +49,7 @@ class Mono {
    * @return {target}
    */
   static mono(target, onerror) {
-    if (typeof target !== "function" ||
-      typeof target.constructor !== "function")
+    if (!is.func(target) || !is.func(target))
       throw new Error("Bad argument. Required class or function")
     const _ = function (...args) {
       return Mono.mixin(new target(...args), onerror)
@@ -61,12 +60,12 @@ class Mono {
       target.constructor = target.prototype.constructor = _
       _.prototype = target.prototype || {}
     } catch (e) {
-      console.warn("Mono error. class " +
-        target.name + " not be a mixin to Mono")
+      console.warn("Mono error. Failed mixining class `" +
+        target.name + "` to `Mono`")
       console.trace(e)
     }
     return _.constructor = _.prototype.constructor = _
   }
 }
-const constructorList = new Set([Mono])
+const ctorList = new Set([Mono])
 export default Mono

@@ -1,12 +1,8 @@
-const { create, setPrototypeOf, assign, freeze } = Object
-export default function Null() {
-  if (!new.target)
-    return create(null)
-}
-assign(Null, {
-  prototype: setPrototypeOf(Null, create(null)),
+const { create: c, setPrototypeOf: s, assign: a, freeze: f } = Object
+export default function Null() { if (!new.target) return c(null) }
+a(Null, {
   constructor: Null,
   [Symbol.toStringTag]: "Null",
   toString: () => "function Null() { [native code] }"
 })
-freeze(Null)
+f(s(Null, Null.prototype = c(null)))

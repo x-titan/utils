@@ -42,7 +42,7 @@ function makeValidator(valid, onerror) {
           "` not supported or undefined. Using `is.nonZeroValue`.")
       }
       return value => {
-        if (_.zeroValue(value))
+        if (!_.nonZeroValue(value))
           throw onerror(value, _.nonZeroValue)
       }
   }
@@ -163,6 +163,3 @@ assign(is, _, {
 })
 freeze(setPrototypeOf(is, is.prototype = Object.create(null)))
 export default is
-console.log("This project uses utilities from Titan\n" +
-  "For more information in the https://x-titan.github.io/utils\n" +
-  "Author X-Titan. Email address telmanov2002.at@gmail.com")

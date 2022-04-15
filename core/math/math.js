@@ -18,13 +18,12 @@ export const CONST = {
   EPSILON: Number.EPSILON || 2 ** -52
 }
 Object.freeze(CONST)
-export function validNumber(value) {
-  if (!is.num(value))
-    throw new TypeError("Type error. Required a number")
-}
-validNumber.all = function (...values) {
+export const validateNumber = is.makeValidator(is.num, () => {
+  throw new TypeError("Type error. Required a number")
+})
+validateNumber.any = function (...values) {
   let i = values.length
-  while (i--) validNumber(values[i])
+  while (i--) validateNumber(values[i])
 }
 /**
  * @param {number} inmin
@@ -33,11 +32,11 @@ validNumber.all = function (...values) {
  * @param {number} outmax
  */
 export function normalizer(inmin, inmax, outmin, outmax) {
-  validNumber.all(inmin, inmax, outmin, outmax)
+  validateNumber.any(inmin, inmax, outmin, outmax)
   if (inmin > inmax || outmin > outmax)
     throw new Error("Minmax error")
   return (value = inmin) => {
-    if (!isNumber(value)) value = inmin
+    if (!is.num(value)) value = inmin
     if (value < inmin) value = inmin
     if (value > inmax) value = inmax
     return outmin + ((outmax - outmin) * (value - inmin) / inmax)
@@ -49,7 +48,7 @@ export function normalizer(inmin, inmax, outmin, outmax) {
  * @param {number} max
  */
 export function constraints(value, min, max) {
-  validNumber.all(value, min, max)
+  validateNumber.any(value, min, max)
   if (value < min) return min
   if (value > max) return max
   return value
@@ -61,7 +60,7 @@ export function equals(a, b) {
   return a !== a && b !== b
 }
 //#region Polifill
-Number.validNumber = validNumber
+Number.validateNumber = validateNumber
 Math.normalizer = normalizer
 Math.constraints = constraints
 Math.equals = equals
