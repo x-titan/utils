@@ -51,10 +51,9 @@ each.obj = (obj, fn, stoppable = true) => {
 each.filter = (arr, fn) => {
   validateFunc(fn)
   const out = []
-  let i = arr.length
-  while (i--)
-    if (fn(arr[i], i, arr) === true)
-      out.push(arr[i])
+  each(arr, (v, i) => {
+    if (fn(v, i, arr) === true) out.push(v)
+  }, false)
   return out
 }
 Array.each = each
