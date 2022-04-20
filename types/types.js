@@ -90,7 +90,6 @@ function is(value) {
   if (t === "function") {
     if (_.asyncFunc(value)) return "asyncfunction"
     if (_.genFunc(value)) return "generatorfunction"
-    return t
   }
   return t
 }
