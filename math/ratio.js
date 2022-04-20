@@ -6,7 +6,7 @@ import range from "./range.js"
 let warnedXYEquals = false
 const numsLen = (...nums) => {
   let len = 0
-  each(nums, (n) => {
+  each(nums, n => {
     if (is.num(n)) len++
   })
   return len

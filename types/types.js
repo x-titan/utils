@@ -7,14 +7,14 @@ let warnedAny = false
 /** @return {string} */
 function getCtorName(value) {
   return typeof value.constructor === "function" ?
-    value.constructor.name : null;
+    value.constructor.name : null
 }
 /** @return {string} */
 function getObjName(value) {
   return toString.call(value).slice(8, -1) || null
 }
 function isOfType(type) {
-  return value => typeof value === type;
+  return value => typeof value === type
 }
 /** @param {new unknown} value */
 function canNew(value) {
@@ -33,7 +33,7 @@ function canNew(value) {
 }
 function makeValidator(valid, onerror) {
   if (!is.func(onerror)) {
-    onerror = (value) => {
+    onerror = value => {
       throw new TypeError("The `" + value +
         "` being checked did not pass the check successfully.")
     }
