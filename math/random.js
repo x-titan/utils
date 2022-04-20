@@ -1,4 +1,4 @@
-import is from "../types.js"
+import is from "../types/types.js"
 
 const proxyRand = Math.random
 /** @param {number} [seed] */

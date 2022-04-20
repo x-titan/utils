@@ -1,4 +1,4 @@
-import is from "../types.js"
+import is from "../types/types.js"
 
 const { PI, E, SQRT2, sqrt } = Math
 export const CONST = {

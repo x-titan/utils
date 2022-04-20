@@ -1,6 +1,6 @@
-import is from "../types.js"
-const { freeze } = Object
+import is from "../types/types.js"
 
+const { freeze } = Object
 function baseRange(start, stop, step) {
   const self = {
     [Symbol.iterator]() {

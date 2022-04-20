@@ -1,10 +1,9 @@
-const { freeze, assign, setPrototypeOf } = Object
-const { toString } = Reflect
+const { freeze, assign } = Object
+const { toString, isExtensible } = Reflect
 const { isInteger, isSafeInteger } = Number
 const { iterator, toStringTag } = Symbol
 const objCtor = {}.constructor
 let warnedAny = false
-let warnedMakeValidator = false
 /** @return {string} */
 function getCtorName(value) {
   return typeof value.constructor === "function" ?
@@ -17,8 +16,23 @@ function getObjName(value) {
 function isOfType(type) {
   return value => typeof value === type;
 }
+/** @param {new unknown} value */
+function canNew(value) {
+  const isfn = _.func(value)
+  let attempt = false
+  if (isfn) try {
+    console.warn("Trying call `function` with `new`")
+    new value
+    attempt = true
+  } catch (e) {
+    attempt = false
+    if (!e.message.includes("is not a constructor"))
+      console.error(e)
+  }
+  return isfn && attempt
+}
 function makeValidator(valid, onerror) {
-  if (!_.func(onerror)) {
+  if (!is.func(onerror)) {
     onerror = (value) => {
       throw new TypeError("The `" + value +
         "` being checked did not pass the check successfully.")
@@ -42,8 +56,8 @@ function makeValidator(valid, onerror) {
           "` not supported or undefined. Using `is.nonZeroValue`.")
       }
       return value => {
-        if (!_.nonZeroValue(value))
-          throw onerror(value, _.nonZeroValue)
+        if (!is.nonZeroValue(value))
+          throw onerror(value, is.nonZeroValue)
       }
   }
 }
@@ -62,20 +76,6 @@ function any(exec, ...list) {
     if (exec(list[i]) !== true)
       return false
   return true
-}
-/** @param {new unknown} value */
-function canNew(value) {
-  const isfn = _.func(value)
-  let attempt = false
-  if (isfn) try {
-    new value
-    attempt = true
-  } catch (e) {
-    attempt = false
-    if (!e.message.includes("is not a constructor"))
-      console.trace(e)
-  }
-  return isfn && attempt
 }
 function is(value) {
   if (value === undefined) return "undefined"
@@ -117,9 +117,9 @@ const _ = {
   obj: value => !_.empty(value) && typeof value === "object",
   plainObj: value => _.obj(value) && getObjName(value) === "Object" &&
     (value = value.constructor, value === null || value === objCtor),
+  extensible: isExtensible,
 
   class: value => _.func(value) && ("" + value).startsWith('class '),
-  notClass: value => _.empty(value) || value === globalThis,
   error: value => value instanceof Error,
   args: value => _.arrayLike(value) &&
     getObjName(value) === "Arguments",
@@ -144,6 +144,7 @@ const _ = {
     return false
   }
 }
+
 assign(is, _, {
   null_: _.null,
   undefined_: _.undefined,
@@ -157,9 +158,10 @@ assign(is, _, {
   getCtorName,
   isOfType,
   canNew,
-  any,
   makeValidator,
+  any,
   constructor: null
 })
-freeze(setPrototypeOf(is, is.prototype = Object.create(null)))
+freeze(is)
+
 export default is

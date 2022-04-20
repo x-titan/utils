@@ -1,4 +1,4 @@
-import each from "../each.js"
+import extend from "./extend.js"
 
 /**
  * @param {Object} obj
@@ -6,6 +6,6 @@ import each from "../each.js"
  * @return {obj & source}
  */
 export default function mixin(obj, ...source) {
-  each(source, s => obj = { ...obj, ...s }, false)
+  extend(obj, ...source)
   return obj
 }

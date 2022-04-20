@@ -1,5 +1,4 @@
-import is from "../types.js"
-
+const isFunc = value => typeof value === "function"
 const makeError = name => {
   throw new Error(
     "Objects of the `Mono` class must be in only one instance. " +
@@ -18,7 +17,7 @@ class Mono {
   constructor(onerror) {
     const target = new.target
     if (ctorList.has(target))
-      return is.func(onerror) ? onerror() : makeError(target.name)
+      return isFunc(onerror) ? onerror() : makeError(target.name)
     ctorList.add(target)
   }
   /** @param {new unknown} target */
@@ -39,7 +38,7 @@ class Mono {
       throw new Error("Bad argument. Required object")
     const cons = target.constructor
     if (this.has(cons))
-      return is.func(onerror) ? onerror() : makeError(cons.name)
+      return isFunc(onerror) ? onerror() : makeError(cons.name)
     ctorList.add(cons)
     return target
   }
@@ -49,7 +48,7 @@ class Mono {
    * @return {target}
    */
   static mono(target, onerror) {
-    if (!is.func(target) || !is.func(target))
+    if (!isFunc(target))
       throw new Error("Bad argument. Required class or function")
     const _ = function (...args) {
       return Mono.mixin(new target(...args), onerror)

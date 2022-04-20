@@ -1,5 +1,5 @@
-import each from "../each.js"
-import is from "../types.js"
+import each from "../array/each.js"
+import is from "../types/types.js"
 import { validateNumber } from "./math.js"
 import range from "./range.js"
 

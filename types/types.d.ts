@@ -25,9 +25,8 @@ declare namespace is {
   function bool(value: unknown): value is boolean
   function obj(value: unknown): value is Object
   function class_(value: unknown): value is Class<unknown>
-  /** @deprecated {0.0.4} */
-  function notClass(value: unknown): boolean
   function plainObj(value: unknown): boolean
+  function extensible(value: unknown): boolean
   function error(value: unknown): value is Error
   function argument(value: unknown): boolean
   function int(value: unknown): value is number
