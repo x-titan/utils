@@ -1,4 +1,4 @@
-import is from "../types/types.js"
+import is from "/types/types.js"
 
 function firstUpper(str = "") {
   return str[0].toUpperCase() + str.slice(1)
