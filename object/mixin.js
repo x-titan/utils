@@ -1,11 +1,5 @@
-import extend from "./extend.js"
+import { assign } from '../inherits.js'
 
-/**
- * @param {Object} obj
- * @param {Object} source
- * @return {obj & source}
- */
-export default function mixin(obj, ...source) {
-  extend(obj, ...source)
-  return obj
+export default function mixin(obj, ...sources) {
+  return assign({}, obj, ...sources)
 }

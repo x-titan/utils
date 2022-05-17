@@ -1,33 +1,21 @@
-const has = Object.prototype.hasOwnProperty
-const {
-  isExtensible: isExt,
-  getOwnPropertyDescriptor: getOwn,
-  defineProperty: define,
-} = Reflect
+import { assign, define, getDesc, has, isExt, isFunction, isObject, validateType } from '../inherits.js'
 
-const isObj = value => {
-  const t = typeof value
-  return value !== null && (t === "function" || t === "object")
+export default function extend(obj, ...sources) {
+  return assign(obj, ...sources)
 }
 
-export default function extend(obj, ...source) {
-  if (!isExt(obj))
-    throw new TypeError("First argument not extensible")
-  for (const o of source)
-    if (isObj(o))
-      for (const key in o)
-        if (has.call(o, key))
-          obj[key] = o[key]
-  return obj
-}
-extend.pro = function extend_(obj, ...source) {
-  if (!isExt(obj))
-    throw new TypeError("First argument not extensible")
-  for (const o of source)
-    if (isObj(o))
-      for (const key in o)
-        if (has.call(o, key))
-          define(obj, key, getOwn(o, key))
+extend.pro = function (obj, ...sources) {
+  validateType(isExt, obj)
+
+  for (const o of sources) {
+    if (isObject(o) || isFunction(o)) {
+      for (const key in o) {
+        if (has.call(o, key)) {
+          define(obj, key, getDesc(o, key))
+        }
+      }
+    }
+  }
 
   return obj
 }

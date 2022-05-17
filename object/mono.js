@@ -1,9 +1,12 @@
-const isFunc = value => typeof value === "function"
-const makeError = name => {
+import { isFunction, isObject, validateType } from '../inherits.js'
+
+const monoError = name => {
   throw new Error(
-    "Objects of the `Mono` class must be in only one instance. " +
-    "This class `" + name + "` has already been used")
+    'Objects of the `Mono` class must be in only one instance. '
+    + 'This class `' + name + '` has already been used'
+  )
 }
+
 /**
  * Сhecks whether this item is in the list and returns the result.
  * After checking, it is added to the list.
@@ -13,15 +16,22 @@ const makeError = name => {
  * Else `true`. This means that the item is present in the list.
  */
 class Mono {
-  /** @param {Function} onerror Calling on error */
+  /** @param {() => throw} onerror Calling on error */
   constructor(onerror) {
     const target = new.target
-    if (ctorList.has(target))
-      return isFunc(onerror) ? onerror() : makeError(target.name)
+    if (ctorList.has(target)) {
+      return (
+        isFunction(onerror)
+          ? onerror()
+          : monoError(target.name)
+      )
+    }
     ctorList.add(target)
   }
+
   /** @param {new unknown} target */
   static has(target) { return ctorList.has(target) }
+
   /**
    * Сhecks whether this item is in the list and returns the result.
    * After checking, it is added to the list.
@@ -31,40 +41,56 @@ class Mono {
    * Else `true`. This means that the item is present in the list.
    * @param {Object} target `this`
    * @param {*} [target.]
-   * @param {Function} onerror Calling on error
+   * @param {() => throw} onerror Calling on error
    */
   static mixin(target, onerror) {
-    if (typeof target !== "object")
-      throw new Error("Bad argument. Required object")
+    validateType(isObject, target)
+
     const cons = target.constructor
-    if (this.has(cons))
-      return isFunc(onerror) ? onerror() : makeError(cons.name)
+
+    if (this.has(cons)) {
+      return (
+        isFunction(onerror)
+          ? onerror()
+          : monoError(cons.name)
+      )
+    }
+
     ctorList.add(cons)
     return target
   }
+
   /**
    * @param {new unknown} target
-   * @param {Function} onerror
+   * @param {() => throw} onerror
    * @return {target}
    */
   static mono(target, onerror) {
-    if (!isFunc(target))
-      throw new Error("Bad argument. Required class or function")
+    validateType(isFunction, target)
+
     const _ = function (...args) {
       return Mono.mixin(new target(...args), onerror)
     }
+
     try {
-      if (!target.prototype)
-        Object.setPrototypeOf(target.prototype = {})
+      if (!target.prototype) {
+        Object.setPrototypeOf(target, target.prototype = {})
+      }
+
       target.constructor = target.prototype.constructor = _
-      _.prototype = target.prototype || {}
+      Object.setPrototypeOf(_, _.prototype = target.prototype || {})
     } catch (e) {
-      console.warn("Mono error. Failed mixining class `" +
-        target.name + "` to `Mono`")
+      console.warn(
+        'Mono error. Failed mixining class `'
+        + target.name + '` to `Mono`'
+      )
       console.trace(e)
     }
+
     return _.constructor = _.prototype.constructor = _
   }
 }
+
 const ctorList = new Set([Mono])
+
 export default Mono

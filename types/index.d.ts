@@ -1,18 +1,7 @@
 interface Class<T = unknown> {
   new(...args: any[]): T
 }
-declare const enum TypeName {
-  null = "null",
-  boolean = "boolean",
-  undefined = "undefined",
-  string = "string",
-  number = "number",
-  symbol = "symbol",
-  Function = "Function",
-  Array = "Array",
-  Object = "Object"
-}
-// declare function is(value: unknown): TypeName
+
 declare namespace is {
   function empty(value: unknown): value is undefined | null
   function null_(value: unknown): value is null
@@ -48,4 +37,5 @@ declare namespace is {
   ): (value: unknown) => TypeError
   function any(exec: (value: unknown) => boolean, ...list: unknown[]): boolean
 }
+
 export default is
