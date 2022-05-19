@@ -1,9 +1,10 @@
-import { assign } from '../inherits.js'
-import is from '../types/index.js'
+import { assign, makeValidator } from '../inherits.js'
 
 const proxytoUpperCase = String.prototype.toUpperCase
 const proxytoLowerCase = String.prototype.toLowerCase
-const validateString = is.makeValidator(is.str)
+const validateString = makeValidator(
+  (value) => (value instanceof String)
+)
 
 function firstUpper(str = '') {
   return str[0].toUpperCase() + str.slice(1)
@@ -65,7 +66,7 @@ const _ = {
     }
     return res
   },
-  
+
   toLowerCase(join = false, separator = '') {
     validateString(this)
     let res = proxytoLowerCase.call(this)
