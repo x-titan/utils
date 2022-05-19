@@ -15,10 +15,10 @@ export default function Null() {
 a(Null, {
   constructor: Null,
   [toStringTag]: 'Null',
-  toString() {
-    return `function ${this[toStringTag]
-      || 'Unknown'}() { [native code] }`
-  }
+  toString: () => (
+    `function ${this[toStringTag]
+    || 'Unknown'}() { [native code] }`
+  )
 })
 
 f(s(Null, Null.prototype = c(null)))

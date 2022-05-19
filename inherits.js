@@ -1,12 +1,8 @@
 const { iterator } = Symbol
-const defaultValidatorError = (value) => {
-  throw new TypeError(
-    'The `' + value +
-    '` being checked did not pass the check successfully.'
-  )
-}
 
 export const { assign } = Object
+
+export const { isArray } = Array
 
 export const {
   toString,
@@ -19,9 +15,11 @@ export const {
   defineProperty: define,
 } = Reflect
 
-export const { isArray } = Array
+export function isDefined(value) {
+  return value !== null && value !== undefined
+}
 
-/** @return {value is (...args)=>any} */
+/** @return {value is (...args: unknown[]) => unknown} */
 export function isFunction(value) {
   return typeof value === 'function'
 }
@@ -37,16 +35,23 @@ export function isNumber(value) {
 }
 
 export function isIterable(value) {
-  return value && isFunction(value[iterator])
+  return isDefined(value) && isFunction(value[iterator])
 }
 
+function defaultValidatorError(value) {
+  throw new TypeError(
+    'The `' + value +
+    '` being checked did not pass the check successfully.'
+  )
+}
+
+
 export function validateType(type, source, err) {
-  if (isFunction(type) && type(source)) {
-    return true
-  }
-  if (typeof type === 'string' && typeof source === type) {
-    return true
-  }
+  if (
+    typeof source === type
+    || isFunction(type)
+    && type(source)
+  ) return true
 
   if (err) throw err()
 
@@ -57,7 +62,6 @@ validateType.any = function (type, ...sources) {
   if (typeof type === 'string') {
     type = (value) => (typeof value === type)
   }
-
   if (!isFunction(type)) {
     throw new TypeError('Required a function or string')
   }
@@ -74,7 +78,7 @@ validateType.any = function (type, ...sources) {
 /**
  * @param {(value: unknown) => boolean} exec
  * @param {(value: unknown, fn: exec) => throw} onerror 
- * @return {(value: unknown) => void & {any: (...values: unknown[]) => void}}
+ * @return {((value: unknown) => void) & {any: (...values: unknown[]) => void}}
  */
 export function makeValidator(exec, onerror) {
   if (!isFunction(onerror)) onerror = defaultValidatorError
@@ -120,6 +124,27 @@ export function each(arr, fn, stoppable = false) {
       && stoppable === true
     ) break
   }
+
+  return arr
+}
+
+/**
+ * @param {unknown[]} arr
+ * @param {(value: unknown, index: number, array: arr) => void} fn
+ */
+each.reverse = function (arr, fn, stoppable = false) {
+  validateType(isArray, arr)
+  validateType(isFunction, fn)
+
+  let index = arr.length
+  while (index--) {
+    if (
+      fn(arr[index], index, arr) === false
+      && stoppable === true
+    ) break
+  }
+
+  return arr
 }
 
 /**
@@ -128,7 +153,11 @@ export function each(arr, fn, stoppable = false) {
  * @param {(value: unknown, index: number, self: obj) => void} fn
  */
 each.obj = function (obj, fn, stoppable = false) {
-  validateType((value) => (value !== null && value !== undefined), obj)
+  validateType(
+    (value) => (
+      value !== null &&
+      value !== undefined
+    ), obj)
   validateType(isFunction, fn)
 
   const keys = Object.keys(obj)

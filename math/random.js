@@ -6,10 +6,7 @@ const proxyRand = Math.random
 export function randomSeed(seed) {
   const _rand = (
     isNumber(seed)
-      ? () => {
-        seed = (seed * 9301 + 49297) % 233280
-        return seed / 233280
-      }
+      ? () => ((seed = (seed * 9301 + 49297) % 233280) / 233280)
       : proxyRand
   )
 

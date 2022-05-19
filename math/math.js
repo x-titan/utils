@@ -49,8 +49,9 @@ export function constraints(value, min, max) {
  */
 export function normalizer(inmin, inmax, outmin, outmax) {
   validateNumber.any(inmin, inmax, outmin, outmax)
-  if (inmin > inmax || outmin > outmax)
+  if (inmin > inmax || outmin > outmax) {
     throw new Error('Minmax error')
+  }
   return (value = inmin) => {
     if (!is.num(value)) value = inmin
     if (value < inmin) value = inmin

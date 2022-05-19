@@ -1,6 +1,7 @@
 import {
   assign,
   isArray,
+  isDefined,
   isExt,
   isFunction,
   isIterable,
@@ -25,39 +26,34 @@ function isOfType(type) {
 
 /** @return {string} */
 function getCtorName(value) {
-  return typeof value.constructor === "function" ?
-    value.constructor.name : null
+  return isFunction(value.constructor)
+    ? value.constructor.name
+    : null
+
 }
 
 /** @param {new unknown} value */
 function canNew(value) {
-  const isfn = _.func(value)
-  let attempt = false
-  if (isfn) try {
-    console.warn("Trying call `function` with `new`")
+  if (isFunction(value)) try {
+    console.warn('Trying call `function` with `new`')
     new value
-    attempt = true
+    return true
   } catch (e) {
-    attempt = false
-    if (!e.message.includes("is not a constructor"))
+    if (!e.message.includes('is not a constructor')) {
       console.error(e)
+    }
   }
-  return isfn && attempt
+  return false
 }
 
 function any(exec, ...list) {
   validateType(isFunction, exec)
 
   let i = list.length
-  if (i === 0) {
-    if (!warnedAny) {
-      warnedAny = true
-      console.warn('Checking list a empty.')
-    }
-    return false
-  }
+  if (i === 0) return false
+
   while (i--) {
-    if (exec(list[i]) !== true) return false
+    if (!exec(list[i])) return false
   }
   return true
 }
@@ -85,10 +81,12 @@ const _ = {
   empty: (value) => (value === undefined || value === null),
   null: (value) => (value === null),
   undefined: (value) => (value === undefined),
+  defined: isDefined,
   zeroValue: (value) => (
     _.empty(value)
     || value === 0
-    || (_.arrayLike(value) && value.length === 0)
+    || _.arrayLike(value)
+    && value.length === 0
   ),
   nonZeroValue: (value) => (!_.zeroValue(value)),
 
@@ -111,8 +109,26 @@ const _ = {
 
   plainObj: (value) => (
     _.obj(value)
-    && getObjName(value) === "Object"
-    && ((value = value.constructor) === null || value === objCtor)
+    && getObjName(value) === 'Object'
+    && (value = value.constructor) === null
+    || value === objCtor
+  ),
+
+  buffer: (value) => (
+    isDefined(value)
+    && isFunction(value.constructor?.isBuffer)
+    && value.constructor.isBuffer(value)
+  ),
+  
+  class: (value) => (
+    isFunction(value)
+    && ('' + value).startsWith('class ')
+  ),
+
+  arrayLike: (value) => (
+    !_.empty(value)
+    && _.int(value.length)
+    && value.length > -1
   ),
 
   args: (value) => (
@@ -120,27 +136,17 @@ const _ = {
   ),
 
   genFunc: (value) => (
-    _.func(value) && getCtorName(value) === 'GeneratorFunction'
+    isFunction(value) && getCtorName(value) === 'GeneratorFunction'
   ),
 
   asyncFunc: (value) => (
-    _.func(value) && getCtorName(value) === 'AsyncFunction'
-
+    isFunction(value) && getCtorName(value) === 'AsyncFunction'
   ),
 
   array: isArray,
   iterable: isIterable,
   extensible: isExt,
-  class: (value) => (_.func(value) && ('' + value).startsWith('class ')),
   error: (value) => (value instanceof Error),
-  arrayLike: (value) => (
-    !_.empty(value) && _.int(value.length) && value.length > -1
-  ),
-  buffer: (value) => {
-    if (value.constructor && _.func(value.constructor.isBuffer))
-      return value.constructor.isBuffer(value)
-    return false
-  },
 }
 
 assign(is, _, {
