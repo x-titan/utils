@@ -10,4 +10,5 @@ declare namespace extend {
   function pro<T, U, V, W, X>(target: T, source1: U, source2: V, source3: W, source4: X): T
   function pro(target: any, ...sources: any[]): any
 }
+
 export default extend

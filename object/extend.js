@@ -16,6 +16,5 @@ extend.pro = function (obj, ...sources) {
       }
     }
   }
-
   return obj
 }

@@ -27,6 +27,7 @@ const _ = {
     }
     return out
   },
+
   toCamelCase(join = false) {
     validateString(this)
     let out = ''
@@ -45,6 +46,7 @@ const _ = {
     }
     return out
   },
+
   toUpperCase(join = false, separator = '') {
     validateString(this)
     let res = proxytoUpperCase.call(this)
@@ -63,6 +65,7 @@ const _ = {
     }
     return res
   },
+  
   toLowerCase(join = false, separator = '') {
     validateString(this)
     let res = proxytoLowerCase.call(this)

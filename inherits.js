@@ -45,7 +45,6 @@ function defaultValidatorError(value) {
   )
 }
 
-
 export function validateType(type, source, err) {
   if (
     typeof source === type

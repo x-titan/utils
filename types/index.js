@@ -9,7 +9,7 @@ import {
   isObject,
   makeValidator,
   toString,
-  validateType
+  validateType,
 } from '../inherits.js'
 
 const objCtor = {}.constructor

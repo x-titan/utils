@@ -1,5 +1,6 @@
 import { randInt } from "./random.js"
 
+const uuidList = new Set()
 const UPPER_A = 65
 const UPPER_Z = 90
 const LOWER_A = 97
@@ -42,8 +43,6 @@ function randSymbolChar() {
 function randLetter() {
   return LETTERS[randInt(0, 3)]()
 }
-
-const uuidList = new Set()
 
 /** 
  * @param {number} len
