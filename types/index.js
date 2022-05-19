@@ -25,9 +25,11 @@ function isOfType(type) {
 
 /** @return {string} */
 function getCtorName(value) {
-  return isFunction(value.constructor)
-    ? value.constructor.name
-    : null
+  return (
+    (isDefined(value) && isFunction(value.constructor))
+      ? value.constructor.name
+      : null
+  )
 }
 
 /** @param {new unknown} value */
