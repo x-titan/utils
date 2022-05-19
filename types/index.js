@@ -14,7 +14,6 @@ import {
 
 const objCtor = {}.constructor
 const { isSafeInteger } = Number
-let warnedAny = false
 
 function getObjName(value) {
   return toString.call(value).slice(8, -1) || null
@@ -29,7 +28,6 @@ function getCtorName(value) {
   return isFunction(value.constructor)
     ? value.constructor.name
     : null
-
 }
 
 /** @param {new unknown} value */
@@ -119,7 +117,7 @@ const _ = {
     && isFunction(value.constructor?.isBuffer)
     && value.constructor.isBuffer(value)
   ),
-  
+
   class: (value) => (
     isFunction(value)
     && ('' + value).startsWith('class ')
