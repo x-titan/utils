@@ -3,7 +3,7 @@ import { assign, makeValidator } from '../inherits.js'
 const proxytoUpperCase = String.prototype.toUpperCase
 const proxytoLowerCase = String.prototype.toLowerCase
 const validateString = makeValidator(
-  (value) => (value instanceof String)
+  (value) => (value instanceof String || typeof value === "string")
 )
 
 function firstUpper(str = '') {
@@ -49,10 +49,10 @@ const _ = {
   },
 
   toUpperCase(join = false, separator = '') {
-    validateString(this)
+    // validateString(this)
     let res = proxytoUpperCase.call(this)
     if (join) {
-      validateString(separator)
+      // validateString(separator)
       let out = ''
       for (const macth of res.matchAll(/[A-Z]+/gm)) {
         if (pass) {
@@ -68,10 +68,10 @@ const _ = {
   },
 
   toLowerCase(join = false, separator = '') {
-    validateString(this)
+    // validateString(this)
     let res = proxytoLowerCase.call(this)
     if (join) {
-      validateString(separator)
+      // validateString(separator)
       let out = ''
       let pass = true
       for (const macth of res.matchAll(/[a-z]+/gm)) {
