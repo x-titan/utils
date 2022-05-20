@@ -16,44 +16,52 @@ function onlyFirstUpper(str = '') {
 
 const _ = {
   toPascalCase(join = false) {
-    // validateString(this)
+    validateString(this)
     let out = ''
+    
     for (const macth of this.matchAll(/[a-zA-Z]+/gm)) {
       const index = macth.index
-      const str = firstUpper(macth[0])
-      if (out.length === index || join)
+      const str = onlyFirstUpper(macth[0])
+
+      if (out.length === index || join) {
         out += str
-      else
+      } else {
         out += this.slice(out.length, index) + str
+      }
     }
     return out
   },
 
   toCamelCase(join = false) {
-    // validateString(this)
+    validateString(this)
     let out = ''
     let pass = true
+
     for (const macth of this.matchAll(/[a-zA-Z]+/gm)) {
       const index = macth.index
-      let str = firstUpper(macth[0])
+      let str = onlyFirstUpper(macth[0])
+
       if (pass) {
-        str = macth[0]
+        str = macth[0].toLowerCase()
         pass = false
       }
-      if (out.length === index || join)
+      if (out.length === index || join) {
         out += str
-      else
+      } else {
         out += this.slice(out.length, index) + str
+      }
     }
     return out
   },
 
   toUpperCase(join = false, separator = '') {
-    // validateString(this)
+    validateString(this)
     let res = proxytoUpperCase.call(this)
+
     if (join) {
-      // validateString(separator)
+      validateString(separator)
       let out = ''
+
       for (const macth of res.matchAll(/[A-Z]+/gm)) {
         if (pass) {
           out += macth
@@ -68,12 +76,14 @@ const _ = {
   },
 
   toLowerCase(join = false, separator = '') {
-    // validateString(this)
+    validateString(this)
     let res = proxytoLowerCase.call(this)
+
     if (join) {
-      // validateString(separator)
+      validateString(separator)
       let out = ''
       let pass = true
+
       for (const macth of res.matchAll(/[a-z]+/gm)) {
         if (pass) {
           out += macth
