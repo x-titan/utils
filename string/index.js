@@ -16,7 +16,7 @@ function onlyFirstUpper(str = '') {
 
 const _ = {
   toPascalCase(join = false) {
-    validateString(this)
+    // validateString(this)
     let out = ''
     for (const macth of this.matchAll(/[a-zA-Z]+/gm)) {
       const index = macth.index
@@ -30,7 +30,7 @@ const _ = {
   },
 
   toCamelCase(join = false) {
-    validateString(this)
+    // validateString(this)
     let out = ''
     let pass = true
     for (const macth of this.matchAll(/[a-zA-Z]+/gm)) {
