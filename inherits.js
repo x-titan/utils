@@ -101,9 +101,7 @@ export function makeValidator(exec, onerror) {
     }
   }
 
-  out.any = function (...values) {
-    forEach(values, out, false)
-  }
+  out.any = (...values) => { each(values, out, false) }
 
   return out
 }
@@ -148,15 +146,10 @@ each.reverse = function (arr, fn, stoppable = false) {
 
 /**
  * @param {object} obj
- * @param {*} [obj.]
  * @param {(value: unknown, index: number, self: obj) => void} fn
  */
 each.obj = function (obj, fn, stoppable = false) {
-  validateType(
-    (value) => (
-      value !== null &&
-      value !== undefined
-    ), obj)
+  validateType(isDefined, obj)
   validateType(isFunction, fn)
 
   const keys = Object.keys(obj)
