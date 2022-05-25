@@ -116,8 +116,8 @@ export function ratio(a, b, c, d) {
  */
 export function allRatio(x, y) {
   validateNumber.any(x, y)
-  a = Math.abs(a)
-  b = Math.abs(b)
+  x = Math.abs(x)
+  y = Math.abs(y)
 
   let i = x
   const out = [{ x, y }]
