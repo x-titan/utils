@@ -61,6 +61,7 @@ const _ = {
     if (join) {
       validateString(separator)
       let out = ''
+      let pass = true
 
       for (const macth of res.matchAll(/[A-Z]+/gm)) {
         if (pass) {
