@@ -96,7 +96,7 @@ export function ratio(a, b, c, d) {
   } else if (isNumber(d)) {
     c = d * a / b
   } else {
-    const n = gcf(a, b)
+    const n = gcd(a, b)
     c = a / n
     d = b / n
   }
