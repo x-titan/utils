@@ -152,7 +152,7 @@ export function constraints(value, min, max) {
  * @param {number} outmin
  * @param {number} outmax
  */
-export function normalizer_(inmin, inmax, outmin, outmax) {
+export function minmax(inmin, inmax, outmin, outmax) {
   validateNumber.any(inmin, inmax, outmin, outmax)
 
   if (inmin > inmax || outmin > outmax) {
@@ -173,7 +173,7 @@ Number.validateInteger = validateInteger
 Number.normalizer = normalizer
 Number.isNumber = isNumber
 
-Math.normalizer_ = normalizer_
+Math.minmax = minmax
 Math.gcd = gcd
 Math.ratio = ratio
 Math.allRatio = allRatio
