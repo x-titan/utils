@@ -1,5 +1,6 @@
 import {
   assign,
+  getObjectType,
   isArray,
   isDefined,
   isExt,
@@ -13,18 +14,15 @@ import {
 } from '../inherits.js'
 
 const objCtor = {}.constructor
-const { isSafeInteger } = Number
 
-function getObjName(value) {
-  return toString.call(value).slice(8, -1) || null
-}
+const { isSafeInteger } = Number
 
 function isOfType(type) {
   return (value) => (typeof value === type)
 }
 
 /** @return {string} */
-function getCtorName(value) {
+function getConstructorName(value) {
   return (
     (isDefined(value) && isFunction(value.constructor))
       ? value.constructor.name
@@ -109,7 +107,7 @@ const _ = {
 
   plainObj: (value) => (
     _.obj(value)
-    && getObjName(value) === 'Object'
+    && getObjectType(value) === 'Object'
     && (value = value.constructor) === null
     || value === objCtor
   ),
@@ -132,15 +130,15 @@ const _ = {
   ),
 
   args: (value) => (
-    _.arrayLike(value) && getObjName(value) === 'Arguments'
+    _.arrayLike(value) && getObjectType(value) === 'Arguments'
   ),
 
   genFunc: (value) => (
-    isFunction(value) && getCtorName(value) === 'GeneratorFunction'
+    isFunction(value) && getConstructorName(value) === 'GeneratorFunction'
   ),
 
   asyncFunc: (value) => (
-    isFunction(value) && getCtorName(value) === 'AsyncFunction'
+    isFunction(value) && getConstructorName(value) === 'AsyncFunction'
   ),
 
   array: isArray,
@@ -156,10 +154,9 @@ assign(is, _, {
   undefined_: _.undefined,
   class_: _.class,
   NaN: _.nan,
-  argument: _.args,
   arguments_: _.args,
-  getObjName,
-  getCtorName,
+  getObjectType,
+  getConstructorName,
   isOfType,
   any,
   canNew,

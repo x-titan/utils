@@ -1,3 +1,5 @@
+const plainObj = {}
+
 const { iterator } = Symbol
 
 export const { assign } = Object
@@ -36,6 +38,11 @@ export function isNumber(value) {
 
 export function isIterable(value) {
   return isDefined(value) && isFunction(value[iterator])
+}
+
+/** @return {string} */
+export function getObjectType(value) {
+  return toString.call(value).slice(8, -1).toLowerCase()
 }
 
 function defaultValidatorError(value) {
@@ -109,16 +116,23 @@ export function makeValidator(exec, onerror) {
 /**
  * @param {unknown[]} arr
  * @param {(value: unknown, index: number, array: arr) => void} fn
+ * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
-export function each(arr, fn, stoppable = false) {
+export function each(arr, fn, config) {
   validateType(isIterable, arr)
   validateType(isFunction, fn)
 
+  const {
+    stoppable = false,
+    ctx = null,
+  } = config || plainObj
+
   let index = 0
+
   for (const item of arr) {
     if (
-      fn(item, index++, arr) === false
-      && stoppable === true
+      fn.call(ctx, item, index++, arr) === false
+      && stoppable
     ) break
   }
 
@@ -128,16 +142,22 @@ export function each(arr, fn, stoppable = false) {
 /**
  * @param {unknown[]} arr
  * @param {(value: unknown, index: number, array: arr) => void} fn
+ * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
-each.reverse = function (arr, fn, stoppable = false) {
+each.reverse = function (arr, fn, config) {
   validateType(isArray, arr)
   validateType(isFunction, fn)
+
+  const {
+    stoppable = false,
+    ctx = null,
+  } = config || plainObj
 
   let index = arr.length
   while (index--) {
     if (
-      fn(arr[index], index, arr) === false
-      && stoppable === true
+      fn.call(ctx, arr[index], index, arr) === false
+      && stoppable
     ) break
   }
 
@@ -147,19 +167,26 @@ each.reverse = function (arr, fn, stoppable = false) {
 /**
  * @param {object} obj
  * @param {(value: unknown, index: number, self: obj) => void} fn
+ * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
-each.obj = function (obj, fn, stoppable = false) {
+each.obj = function (obj, fn, config) {
   validateType(isDefined, obj)
   validateType(isFunction, fn)
 
+  const {
+    stoppable = false,
+    ctx = null,
+  } = config || plainObj
+
   const keys = Object.keys(obj)
+
   let i = keys.length, k;
 
   while (i--) {
     if (
       has.call(obj, k = keys[i])
-      && fn(obj[k], k, obj) === false
-      && stoppable === true
+      && fn.call(ctx, obj[k], k, obj) === false
+      && stoppable
     ) break
   }
 

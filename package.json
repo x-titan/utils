@@ -16,5 +16,7 @@
   "bugs": {
     "url": "https://github.com/x-titan/utils/issues"
   },
-  "homepage": "https://github.com/x-titan/utils#readme"
+  "homepage": "https://github.com/x-titan/utils#readme",
+  "dependencies": {},
+  "devDependencies": {}
 }

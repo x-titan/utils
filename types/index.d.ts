@@ -6,18 +6,25 @@ declare namespace is {
   function empty(value: unknown): value is undefined | null
   function null_(value: unknown): value is null
   function undefined(value: unknown): value is undefined
+  function defined(value: unknown): value is any
   function nonZeroValue(value: unknown): boolean
+
   function num(value: unknown): value is number
   function str(value: unknown): value is string
-  function func(value: unknown): value is Function
-  function symbol(value: unknown): value is Symbol
   function bool(value: unknown): value is boolean
+  function symbol(value: unknown): value is Symbol
+  
+  function func(value: unknown): value is Function
+  function genFunc(value: unknown): value is GeneratorFunction
+  function asyncFunc(value: unknown): value is AsyncFunction
+  
   function obj(value: unknown): value is Object
-  function class_(value: unknown): value is Class<unknown>
   function plainObj(value: unknown): boolean
+  function args(value: unknown): boolean
   function extensible(value: unknown): boolean
+  function class_(value: unknown): value is Class<unknown>
   function error(value: unknown): value is Error
-  function argument(value: unknown): boolean
+  
   function int(value: unknown): value is number
   function decimal(value: unknown): value is number
   function float(value: unknown): value is number
@@ -28,14 +35,20 @@ declare namespace is {
   function safeInt(value: unknown): value is number
   function nan(value: unknown): boolean
   function NaN(value: unknown): boolean
+  
   function array<T>(value: unknown): value is T[]
   function arrayLike<T>(value: unknown): value is T[]
   function iterable<T>(value: unknown): value is Iterable<T>
+  
   function makeValidator(
     exec: (value: unknown) => boolean,
     onerror: (value: unknown, exec: Function) => TypeError
   ): (value: unknown) => TypeError
-  function any(exec: (value: unknown) => boolean, ...list: unknown[]): boolean
+  
+  function any(
+    exec: (value: unknown) => boolean,
+    ...list: unknown[]
+  ): boolean
 }
 
 export default is
