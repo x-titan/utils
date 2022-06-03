@@ -52,6 +52,11 @@ function defaultValidatorError(value) {
   )
 }
 
+/**
+ * @param {string | (value: unknown) => boolean} type
+ * @param {unknown} source
+ * @param {Error} err
+ */
 export function validateType(type, source, err) {
   if (
     typeof source === type
@@ -64,6 +69,10 @@ export function validateType(type, source, err) {
   defaultValidatorError(source)
 }
 
+/**
+ * @param {string | (value: unknown) => boolean} type
+ * @param {...unknown} sources
+ */
 validateType.any = function (type, ...sources) {
   if (typeof type === 'string') {
     type = (value) => (typeof value === type)

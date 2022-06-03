@@ -53,6 +53,7 @@ function any(exec, ...list) {
   while (i--) {
     if (!exec(list[i])) return false
   }
+
   return true
 }
 
