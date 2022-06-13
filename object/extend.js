@@ -1,4 +1,13 @@
-import { assign, define, getDesc, has, isExt, isFunction, isObject, validateType } from '../inherits.js'
+import {
+  assign,
+  define,
+  getDesc,
+  has,
+  isExt,
+  isFunction,
+  isObject,
+  validateType,
+} from '../inherits.js'
 
 export default function extend(obj, ...sources) {
   return assign(obj, ...sources)
@@ -16,5 +25,6 @@ extend.pro = function (obj, ...sources) {
       }
     }
   }
+
   return obj
 }

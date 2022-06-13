@@ -1,6 +1,6 @@
 import { isFunction, isObject, validateType } from '../inherits.js'
 
-const monoError = name => {
+const monoError = (name) => {
   throw new Error(
     'Objects of the `Mono` class must be in only one instance. '
     + 'This class `' + name + '` has already been used'
@@ -16,9 +16,10 @@ const monoError = name => {
  * Else `true`. This means that the item is present in the list.
  */
 class Mono {
-  /** @param {() => throw} onerror Calling on error */
+  /** @param {() => throw} [onerror] Calling on error */
   constructor(onerror) {
     const target = new.target
+
     if (ctorList.has(target)) {
       return (
         isFunction(onerror)

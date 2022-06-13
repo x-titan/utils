@@ -4,7 +4,10 @@ const { iterator } = Symbol
 
 export const { assign } = Object
 
-export const { isArray } = Array
+/**
+ * @type {(arg: unknown) => arg is unknown[]}
+ */
+export const isArray = Array.isArray
 
 export const {
   toString,
@@ -38,11 +41,6 @@ export function isNumber(value) {
 
 export function isIterable(value) {
   return isDefined(value) && isFunction(value[iterator])
-}
-
-/** @return {string} */
-export function getObjectType(value) {
-  return toString.call(value).slice(8, -1).toLowerCase()
 }
 
 function defaultValidatorError(value) {

@@ -2,7 +2,7 @@ const {
   create: c,
   setPrototypeOf: s,
   assign: a,
-  freeze: f
+  freeze: f,
 } = Object
 
 const { toStringTag } = Symbol

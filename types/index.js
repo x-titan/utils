@@ -1,6 +1,5 @@
 import {
   assign,
-  getObjectType,
   isArray,
   isDefined,
   isExt,
@@ -19,6 +18,11 @@ const { isSafeInteger } = Number
 
 function isOfType(type) {
   return (value) => (typeof value === type)
+}
+
+/** @return {string} */
+function getObjectName(value) {
+  return toString.call(value).slice(8, -1) || null
 }
 
 /** @return {string} */
@@ -108,7 +112,7 @@ const _ = {
 
   plainObj: (value) => (
     _.obj(value)
-    && getObjectType(value) === 'Object'
+    && getObjectName(value) === 'Object'
     && (value = value.constructor) === null
     || value === objCtor
   ),
@@ -121,7 +125,7 @@ const _ = {
 
   class: (value) => (
     isFunction(value)
-    && ('' + value).startsWith('class ')
+    && Function.toString.call(value).startsWith("class ")
   ),
 
   arrayLike: (value) => (
@@ -131,15 +135,18 @@ const _ = {
   ),
 
   args: (value) => (
-    _.arrayLike(value) && getObjectType(value) === 'Arguments'
+    _.arrayLike(value)
+    && getObjectName(value) === 'Arguments'
   ),
 
   genFunc: (value) => (
-    isFunction(value) && getConstructorName(value) === 'GeneratorFunction'
+    isFunction(value)
+    && getConstructorName(value) === 'GeneratorFunction'
   ),
 
   asyncFunc: (value) => (
-    isFunction(value) && getConstructorName(value) === 'AsyncFunction'
+    isFunction(value)
+    && getConstructorName(value) === 'AsyncFunction'
   ),
 
   array: isArray,
@@ -156,7 +163,7 @@ assign(is, _, {
   class_: _.class,
   NaN: _.nan,
   arguments_: _.args,
-  getObjectType,
+  getObjectName,
   getConstructorName,
   isOfType,
   any,
