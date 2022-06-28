@@ -53,7 +53,7 @@ function defaultValidatorError(value) {
 /**
  * @param {string | (value: unknown) => boolean} type
  * @param {unknown} source
- * @param {Error} err
+ * @param {() => Error} err
  */
 export function validateType(type, source, err) {
   if (
@@ -62,7 +62,7 @@ export function validateType(type, source, err) {
     && type(source)
   ) return true
 
-  if (err) throw err()
+  if (isFunction(err)) throw err()
 
   defaultValidatorError(source)
 }

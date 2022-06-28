@@ -2,7 +2,7 @@ import { isNumber, makeValidator } from '../inherits.js'
 
 const { EPSILON } = Number
 const ONE_EPS = 1 - EPSILON
-const { PI, E, SQRT2, sqrt } = Math
+const { PI, E, SQRT2, sqrt, abs } = Math
 const { isInteger } = Number
 
 export const CONST = {
@@ -58,8 +58,8 @@ export function normalizer(num) {
  */
 export function gcd(a, b) {
   validateNumber.any(a, b)
-  a = Math.abs(a)
-  b = Math.abs(b)
+  a = abs(a)
+  b = abs(b)
 
   if (b > a) {
     const t = a
@@ -84,8 +84,8 @@ export function gcd(a, b) {
  */
 export function ratio(a, b, c, d) {
   validateNumber.any(a, b)
-  a = Math.abs(a)
-  b = Math.abs(b)
+  a = abs(a)
+  b = abs(b)
 
   const aspect_ratio = ((a > b) ? (a / b) : (b / a))
 
@@ -116,8 +116,8 @@ export function ratio(a, b, c, d) {
  */
 export function allRatio(x, y) {
   validateNumber.any(x, y)
-  x = Math.abs(x)
-  y = Math.abs(y)
+  x = abs(x)
+  y = abs(y)
 
   let i = x
   const out = [{ x, y }]

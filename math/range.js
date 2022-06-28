@@ -48,7 +48,7 @@ export default function range(start, stop, step) {
     stop = start || 1
     start = 0
   }
-  if (!isNumber(step)) step = (start > stop) ? -1 : 1
+  if (!isNumber(step)) step = ((start > stop) ? -1 : 1)
   if (
     (start > stop && step > 0)
     || (start < stop && step < 0)
