@@ -14,10 +14,10 @@ export default function Null() {
 
 a(Null, {
   constructor: Null,
-  [toStringTag]: 'Null',
+  [toStringTag]: "Null",
   toString: () => (
     `function ${this[toStringTag]
-    || 'Unknown'}() { [native code] }`
+    || "Unknown"}() { [native code] }`
   )
 })
 

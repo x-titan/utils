@@ -1,4 +1,4 @@
-import { isNumber } from '../inherits.js'
+import { isNumber } from "../inherits.js"
 
 const proxyRand = Math.random
 

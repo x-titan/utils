@@ -1,4 +1,4 @@
-import { isNumber } from '../inherits.js'
+import { isNumber } from "../inherits.js"
 
 const { freeze } = Object
 
@@ -42,7 +42,7 @@ function baseRange(start, stop, step) {
  * @param {number} [step] 
  */
 export default function range(start, stop, step) {
-  if (step === 0) throw new Error('Step not a zero value')
+  if (step === 0) throw new Error("Step not a zero value")
   if (!isNumber(start)) start = 0
   if (!isNumber(stop)) {
     stop = start || 1
@@ -52,7 +52,7 @@ export default function range(start, stop, step) {
   if (
     (start > stop && step > 0)
     || (start < stop && step < 0)
-  ) throw new Error('Reverse step error')
+  ) throw new Error("Reverse step error")
 
   return baseRange(start, stop, step)
 }

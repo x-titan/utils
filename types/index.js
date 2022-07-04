@@ -10,7 +10,7 @@ import {
   makeValidator,
   toString,
   validateType,
-} from '../inherits.js'
+} from "../inherits.js"
 
 const objCtor = {}.constructor
 
@@ -37,11 +37,11 @@ function getConstructorName(value) {
 /** @param {new unknown} value */
 function canNew(value) {
   if (isFunction(value)) try {
-    console.warn('Trying call `function` with `new`')
+    console.warn("Trying call `function` with `new`")
     new value
     return true
   } catch (e) {
-    if (!e.message.includes('is not a constructor')) {
+    if (!e.message.includes("is not a constructor")) {
       console.error(e)
     }
   }
@@ -62,19 +62,19 @@ function any(exec, ...list) {
 }
 
 function is(value) {
-  if (value === undefined) return 'undefined'
-  if (value === null) return 'null'
+  if (value === undefined) return "undefined"
+  if (value === null) return "null"
 
-  if (_.array(value)) return 'array'
-  if (_.buffer(value)) return 'buffer'
-  if (_.error(value)) return 'error'
-  if (_.args(value)) return 'arguments'
+  if (_.array(value)) return "array"
+  if (_.buffer(value)) return "buffer"
+  if (_.error(value)) return "error"
+  if (_.args(value)) return "arguments"
 
   const t = typeof value
 
-  if (t === 'function') {
-    if (_.asyncFunc(value)) return 'asyncfunction'
-    if (_.genFunc(value)) return 'generatorfunction'
+  if (t === "function") {
+    if (_.asyncFunc(value)) return "asyncfunction"
+    if (_.genFunc(value)) return "generatorfunction"
   }
 
   return t
@@ -96,8 +96,8 @@ const _ = {
   num: isNumber,
   func: isFunction,
   obj: isObject,
-  str: isOfType('string'),
-  symbol: isOfType('symbol'),
+  str: isOfType("string"),
+  symbol: isOfType("symbol"),
   bool: (value) => (value === !!value),
 
   int: (value) => (isNumber(value) && value % 1 === 0),
@@ -112,7 +112,7 @@ const _ = {
 
   plainObj: (value) => (
     _.obj(value)
-    && getObjectName(value) === 'Object'
+    && getObjectName(value) === "Object"
     && (value = value.constructor) === null
     || value === objCtor
   ),
@@ -136,17 +136,17 @@ const _ = {
 
   args: (value) => (
     _.arrayLike(value)
-    && getObjectName(value) === 'Arguments'
+    && getObjectName(value) === "Arguments"
   ),
 
   genFunc: (value) => (
     isFunction(value)
-    && getConstructorName(value) === 'GeneratorFunction'
+    && getConstructorName(value) === "GeneratorFunction"
   ),
 
   asyncFunc: (value) => (
     isFunction(value)
-    && getConstructorName(value) === 'AsyncFunction'
+    && getConstructorName(value) === "AsyncFunction"
   ),
 
   array: isArray,
@@ -157,7 +157,7 @@ const _ = {
 
 assign(is, _, {
   constructor: null,
-  [Symbol.toStringTag]: 'is',
+  [Symbol.toStringTag]: "is",
   null_: _.null,
   undefined_: _.undefined,
   class_: _.class,

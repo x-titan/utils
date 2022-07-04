@@ -1,4 +1,4 @@
-import { isNumber, makeValidator } from '../inherits.js'
+import { isNumber, makeValidator } from "../inherits.js"
 
 const { EPSILON } = Number
 const ONE_EPS = 1 - EPSILON
@@ -156,7 +156,7 @@ export function minmax(inmin, inmax, outmin, outmax) {
   validateNumber.any(inmin, inmax, outmin, outmax)
 
   if (inmin > inmax || outmin > outmax) {
-    throw new Error('Minmax error')
+    throw new Error("Minmax error")
   }
 
   return (value = inmin) => {

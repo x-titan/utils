@@ -1,9 +1,9 @@
-import { isFunction, isObject, validateType } from '../inherits.js'
+import { isFunction, isObject, validateType } from "../inherits.js"
 
 const monoError = (name) => {
   throw new Error(
-    'Objects of the `Mono` class must be in only one instance. '
-    + 'This class `' + name + '` has already been used'
+    "Objects of the `Mono` class must be in only one instance. "
+    + "This class `" + name + "` has already been used"
   )
 }
 
@@ -82,8 +82,8 @@ class Mono {
       Object.setPrototypeOf(_, _.prototype = target.prototype || {})
     } catch (e) {
       console.warn(
-        'Mono error. Failed mixining class `'
-        + target.name + '` to `Mono`'
+        "Mono error. Failed mixining class `"
+        + target.name + "` to `Mono`"
       )
       console.trace(e)
     }

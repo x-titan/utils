@@ -1,4 +1,4 @@
-import { assign, makeValidator } from '../inherits.js'
+import { assign, makeValidator } from "../inherits.js"
 
 const proxytoUpperCase = String.prototype.toUpperCase
 const proxytoLowerCase = String.prototype.toLowerCase
@@ -6,18 +6,18 @@ const validateString = makeValidator(
   (value) => (value instanceof String || typeof value === "string")
 )
 
-function firstUpper(str = '') {
+function firstUpper(str = "") {
   return str[0].toUpperCase() + str.slice(1)
 }
 
-function onlyFirstUpper(str = '') {
+function onlyFirstUpper(str = "") {
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }
 
 const _ = {
   toPascalCase(join = false) {
     validateString(this)
-    let out = ''
+    let out = ""
     
     for (const macth of this.matchAll(/[a-zA-Z]+/gm)) {
       const index = macth.index
@@ -34,7 +34,7 @@ const _ = {
 
   toCamelCase(join = false) {
     validateString(this)
-    let out = ''
+    let out = ""
     let pass = true
 
     for (const macth of this.matchAll(/[a-zA-Z]+/gm)) {
@@ -54,13 +54,13 @@ const _ = {
     return out
   },
 
-  toUpperCase(join = false, separator = '') {
+  toUpperCase(join = false, separator = "") {
     validateString(this)
     let res = proxytoUpperCase.call(this)
 
     if (join) {
       validateString(separator)
-      let out = ''
+      let out = ""
       let pass = true
 
       for (const macth of res.matchAll(/[A-Z]+/gm)) {
@@ -76,13 +76,13 @@ const _ = {
     return res
   },
 
-  toLowerCase(join = false, separator = '') {
+  toLowerCase(join = false, separator = "") {
     validateString(this)
     let res = proxytoLowerCase.call(this)
 
     if (join) {
       validateString(separator)
-      let out = ''
+      let out = ""
       let pass = true
 
       for (const macth of res.matchAll(/[a-z]+/gm)) {

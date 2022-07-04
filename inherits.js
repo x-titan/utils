@@ -26,17 +26,17 @@ export function isDefined(value) {
 
 /** @return {value is (...args: unknown[]) => unknown} */
 export function isFunction(value) {
-  return typeof value === 'function'
+  return typeof value === "function"
 }
 
 /** @return {value is object} */
 export function isObject(value) {
-  return value !== null && typeof value === 'object'
+  return value !== null && typeof value === "object"
 }
 
 /** @return {value is number} */
 export function isNumber(value) {
-  return isFinite(value) && typeof value === 'number'
+  return isFinite(value) && typeof value === "number"
 }
 
 export function isIterable(value) {
@@ -45,8 +45,8 @@ export function isIterable(value) {
 
 function defaultValidatorError(value) {
   throw new TypeError(
-    'The `' + value +
-    '` being checked did not pass the check successfully.'
+    "The `" + value +
+    "` being checked did not pass the check successfully."
   )
 }
 
@@ -72,11 +72,11 @@ export function validateType(type, source, err) {
  * @param {...unknown} sources
  */
 validateType.any = function (type, ...sources) {
-  if (typeof type === 'string') {
+  if (typeof type === "string") {
     type = (value) => (typeof value === type)
   }
   if (!isFunction(type)) {
-    throw new TypeError('Required a function or string')
+    throw new TypeError("Required a function or string")
   }
 
   let i = sources.length
@@ -98,20 +98,20 @@ export function makeValidator(exec, onerror) {
 
   let out
   switch (typeof exec) {
-    case 'function': {
+    case "function": {
       out = function (value) {
         if (!exec(value)) throw onerror(value, exec)
       }
       break
     }
-    case 'string': {
+    case "string": {
       out = function (value) {
         if (typeof value !== exec) throw onerror(value, out)
       }
       break
     }
     default: {
-      throw new TypeError('Required a function or string.')
+      throw new TypeError("Required a function or string.")
     }
   }
 
