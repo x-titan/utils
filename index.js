@@ -1,7 +1,7 @@
 import "./string/index.js"
 import is from "./types/index.js"
 
-export { each } from "./inherits.js"
+export { each, validateType, makeValidator } from "./inherits.js"
 export * from "./math/index.js"
 export * from "./object/index.js"
 export { is }
