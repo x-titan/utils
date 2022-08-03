@@ -3,7 +3,7 @@ import { isNumber } from "../inherits.js"
 const proxyRand = Math.random
 
 /** @param {number} seed */
-export function randomSeed(seed) {
+export function newRandom(seed) {
   const _rand = (
     isNumber(seed)
       ? () => ((seed = (seed * 9301 + 49297) % 233280) / 233280)
@@ -29,7 +29,7 @@ export function randomSeed(seed) {
   }
 }
 
-export const random = randomSeed()
+export const random = newRandom()
 
 /**
  * @param {number} start
@@ -40,5 +40,5 @@ export function randInt(start, end) {
 }
 
 Math.random = random
-Math.randomSeed = randomSeed
+Math.newRandom = newRandom
 Math.randInt = randInt
