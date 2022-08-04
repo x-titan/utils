@@ -7,7 +7,7 @@ export * from "./object/index.js"
 export { is }
 
 console.log(
-  "This project uses web utilities from Titan\n"
-  + "For more information in the https://x-titan.github.io/web-utils\n"
+  "This project uses utilities from Titan\n"
+  + "For more information in the https://x-titan.github.io/utils\n"
   + "Author X-Titan. Email address telmanov2002.at@gmail.com"
 )
