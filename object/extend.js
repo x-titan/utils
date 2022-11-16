@@ -7,7 +7,7 @@ import {
   isFunction,
   isObject,
   validateType,
-} from "../inherits.js"
+} from "../include.js"
 
 export default function extend(obj, ...sources) {
   return assign(obj, ...sources)

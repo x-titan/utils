@@ -1,4 +1,4 @@
-import { assign } from '../inherits.js'
+import { assign } from '../include.js'
 
 /**
  * @param {unknown} obj

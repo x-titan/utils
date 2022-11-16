@@ -1,4 +1,4 @@
-import { isNumber, makeValidator } from "../inherits.js"
+import { isNumber, makeValidator } from "../include.js"
 
 const { EPSILON } = Number
 const ONE_EPS = 1 - EPSILON

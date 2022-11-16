@@ -10,7 +10,7 @@ import {
   makeValidator,
   toString,
   validateType,
-} from "../inherits.js"
+} from "../include.js"
 
 const objCtor = {}.constructor
 
@@ -61,7 +61,7 @@ function any(exec, ...list) {
   return true
 }
 
-function is(value) {
+export function is(value) {
   if (value === undefined) return "undefined"
   if (value === null) return "null"
 
@@ -173,5 +173,3 @@ assign(is, _, {
 })
 
 Object.freeze(is)
-
-export default is

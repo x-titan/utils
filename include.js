@@ -4,9 +4,7 @@ const { iterator } = Symbol
 
 export const { assign } = Object
 
-/**
- * @type {(arg: unknown) => arg is unknown[]}
- */
+/** @type {(arg: unknown) => arg is unknown[]} */
 export const isArray = Array.isArray
 
 export const {
@@ -39,6 +37,7 @@ export function isNumber(value) {
   return isFinite(value) && typeof value === "number"
 }
 
+/** @return {value is Iterable} */
 export function isIterable(value) {
   return isDefined(value) && isFunction(value[iterator])
 }
@@ -54,6 +53,7 @@ function defaultValidatorError(value) {
  * @param {string | (value: unknown) => boolean} type
  * @param {unknown} source
  * @param {() => Error} err
+ * @return {boolean}
  */
 export function validateType(type, source, err) {
   if (
@@ -90,7 +90,7 @@ validateType.any = function (type, ...sources) {
 
 /**
  * @param {(value: unknown) => boolean} exec
- * @param {(value: unknown, fn: exec) => throw} onerror 
+ * @param {(value: unknown, fn: exec) => throw} onerror
  * @return {((value: unknown) => void) & {any: (...values: unknown[]) => void}}
  */
 export function makeValidator(exec, onerror) {
@@ -115,7 +115,7 @@ export function makeValidator(exec, onerror) {
     }
   }
 
-  out.any = (...values) => { each(values, out, false) }
+  out.any = function (...values) { each(values, out, false) }
 
   return out
 }

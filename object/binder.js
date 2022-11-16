@@ -3,7 +3,7 @@ import {
   isExt,
   isFunction,
   validateType,
-} from "../inherits.js"
+} from "../include.js"
 
 export default function binder(obj, paramList, thisArg = obj) {
   validateType(isExt, obj, () => (

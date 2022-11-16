@@ -1,4 +1,4 @@
-import { isNumber } from "../inherits.js"
+import { isNumber } from "../include.js"
 
 const { freeze } = Object
 

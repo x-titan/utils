@@ -1,4 +1,4 @@
-import { isFunction, isObject, validateType } from "../inherits.js"
+import { isFunction, isObject, validateType } from "../include.js"
 
 const monoError = (name) => {
   throw new Error(

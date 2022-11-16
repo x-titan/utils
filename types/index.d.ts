@@ -16,7 +16,7 @@ declare namespace is {
   
   function func(value: unknown): value is Function
   function genFunc(value: unknown): value is GeneratorFunction
-  function asyncFunc(value: unknown): value is AsyncFunction
+  function asyncFunc(value: unknown): value is Promise<unknown>
   
   function obj(value: unknown): value is Object
   function plainObj(value: unknown): boolean
