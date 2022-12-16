@@ -102,7 +102,6 @@ const _ = {
 
   int: (value) => (isNumber(value) && value % 1 === 0),
   float: (value) => (isNumber(value) && value % 1 !== 0),
-  decimal: value => (_.float(value) && value * 10 % 1 === 0),
   positive: (value) => (isNumber(value) && value > 0),
   negative: (value) => (isNumber(value) && value < 0),
   finite: isFinite,

@@ -2,16 +2,19 @@ import { assign, makeValidator } from "../include.js"
 
 const proxyToUpperCase = String.prototype.toUpperCase
 const proxyToLowerCase = String.prototype.toLowerCase
+const anyLetters = /[a-zA-Zа-яА-ЯәӘіІңҢғҒүҮұҰқҚөӨһҺёЁ]+/gm
 
 const validateString = makeValidator(
   (value) => (value instanceof String || typeof value === "string")
 )
 
 function firstUpper(str = "") {
+  if (str === "") { return str }
   return str[0].toUpperCase() + str.slice(1)
 }
 
 function onlyFirstUpper(str = "") {
+  if (str === "") { return str }
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }
 
@@ -19,7 +22,7 @@ export function toPascalCase(str, join = false) {
   validateString(str)
   let out = ""
 
-  for (const macth of str.matchAll(/[a-zA-Z]+/gm)) {
+  for (const macth of str.matchAll(anyLetters)) {
     const index = macth.index
     const chunk = onlyFirstUpper(macth[0])
 
@@ -29,6 +32,11 @@ export function toPascalCase(str, join = false) {
       out += str.slice(out.length, index) + chunk
     }
   }
+
+  if (out.length < str.length) {
+    out += str.slice(out.length)
+  }
+
   return out
 }
 
@@ -37,7 +45,7 @@ export function toCamelCase(str, join = false) {
   let out = ""
   let pass = true
 
-  for (const macth of str.matchAll(/[a-zA-Z]+/gm)) {
+  for (const macth of str.matchAll(anyLetters)) {
     const index = macth.index
     let chunk = onlyFirstUpper(macth[0])
 
@@ -52,6 +60,11 @@ export function toCamelCase(str, join = false) {
       out += str.slice(out.length, index) + chunk
     }
   }
+
+  if (out.length < str.length) {
+    out += str.slice(out.length)
+  }
+
   return out
 }
 
@@ -64,7 +77,7 @@ export function toUpperCase(str, join = false, separator = "") {
     let out = ""
     let pass = true
 
-    for (const macth of res.matchAll(/[A-Z]+/gm)) {
+    for (const macth of res.matchAll(anyLetters)) {
       if (pass) {
         out += macth
         pass = false
@@ -86,7 +99,7 @@ export function toLowerCase(str, join = false, separator = "") {
     let out = ""
     let pass = true
 
-    for (const macth of res.matchAll(/[a-z]+/gm)) {
+    for (const macth of res.matchAll(anyLetters)) {
       if (pass) {
         out += macth
         pass = false
