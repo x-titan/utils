@@ -2,7 +2,7 @@ import { assign, makeValidator } from "../include.js"
 
 const proxyToUpperCase = String.prototype.toUpperCase
 const proxyToLowerCase = String.prototype.toLowerCase
-const anyLetters = /[a-zA-Zа-яА-ЯәӘіІңҢғҒүҮұҰқҚөӨһҺёЁ]+/gm
+const Characters = /[^\s\d\-\_\=\+\\\/\|\.\,\:\;\"\'\!\?\`\~\^\&\*\№\@\#\$\%\(\)\{\}\[\]\<\>]+/gm
 
 const validateString = makeValidator(
   (value) => (value instanceof String || typeof value === "string")
@@ -10,19 +10,19 @@ const validateString = makeValidator(
 
 function firstUpper(str = "") {
   if (str === "") { return str }
-  return str[0].toUpperCase() + str.slice(1)
+  return proxyToUpperCase.call(str[0]) + str.slice(1)
 }
 
 function onlyFirstUpper(str = "") {
   if (str === "") { return str }
-  return str[0].toUpperCase() + str.slice(1).toLowerCase()
+  return proxyToUpperCase.call(str[0]) + proxyToLowerCase.call(str.slice(1))
 }
 
 export function toPascalCase(str, join = false) {
   validateString(str)
   let out = ""
 
-  for (const macth of str.matchAll(anyLetters)) {
+  for (const macth of str.matchAll(Characters)) {
     const index = macth.index
     const chunk = onlyFirstUpper(macth[0])
 
@@ -33,7 +33,7 @@ export function toPascalCase(str, join = false) {
     }
   }
 
-  if (out.length < str.length) {
+  if (out.length < str.length && !join) {
     out += str.slice(out.length)
   }
 
@@ -45,7 +45,7 @@ export function toCamelCase(str, join = false) {
   let out = ""
   let pass = true
 
-  for (const macth of str.matchAll(anyLetters)) {
+  for (const macth of str.matchAll(Characters)) {
     const index = macth.index
     let chunk = onlyFirstUpper(macth[0])
 
@@ -61,7 +61,8 @@ export function toCamelCase(str, join = false) {
     }
   }
 
-  if (out.length < str.length) {
+  if (out.length < str.length && !join) {
+    console.log("lenght")
     out += str.slice(out.length)
   }
 
@@ -77,7 +78,7 @@ export function toUpperCase(str, join = false, separator = "") {
     let out = ""
     let pass = true
 
-    for (const macth of res.matchAll(anyLetters)) {
+    for (const macth of res.matchAll(Characters)) {
       if (pass) {
         out += macth
         pass = false
@@ -99,7 +100,7 @@ export function toLowerCase(str, join = false, separator = "") {
     let out = ""
     let pass = true
 
-    for (const macth of res.matchAll(anyLetters)) {
+    for (const macth of res.matchAll(Characters)) {
       if (pass) {
         out += macth
         pass = false
@@ -125,4 +126,6 @@ assign(String.prototype, {
   toLowerCase(join = false, separator = "") {
     return toLowerCase(this, join, separator)
   },
+  proxyToLowerCase,
+  proxyToUpperCase,
 })
