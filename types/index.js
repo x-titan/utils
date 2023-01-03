@@ -148,6 +148,7 @@ const _ = {
     && getConstructorName(value) === "AsyncFunction"
   ),
 
+  arr: isArray,
   array: isArray,
   iterable: isIterable,
   extensible: isExt,
