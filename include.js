@@ -49,8 +49,10 @@ function defaultValidatorError(value) {
   )
 }
 
+/** @typedef {"number"|"string"|"boolean"|"object"|"symbol"|"function"} NativeTypes */
+
 /**
- * @param {string | (value: unknown) => boolean} type
+ * @param {NativeTypes | (value: unknown) => boolean} type
  * @param {unknown} source
  * @param {() => Error} err
  * @return {boolean}
