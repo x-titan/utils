@@ -157,7 +157,8 @@ const _ = {
 
 assign(is, _, {
   constructor: null,
-  [Symbol.toStringTag]: "is",
+  prototype: null,
+  [Symbol.toStringTag]: "TypeOf",
   null_: _.null,
   undefined_: _.undefined,
   class_: _.class,
