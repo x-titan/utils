@@ -1,6 +1,6 @@
 {
-  "name": "titan_web",
-  "version": "0.5.0",
+  "name": "xtitan_utils",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "type": "module",
