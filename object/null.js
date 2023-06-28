@@ -1,25 +1,13 @@
 const {
-  create: c,
-  setPrototypeOf: s,
-  assign: a,
-  freeze: f,
+  create,
+  setPrototypeOf,
 } = Object
 
 const { toStringTag } = Symbol
 
-/** @return {{}} */
+/** @return {Null} */
 export default function Null() {
-  if (!new.target) return c(null)
+  return create(null)
 }
 
-a(Null, {
-  constructor: Null,
-  [toStringTag]: "Null",
-  toString: () => (
-    `function ${this[toStringTag]
-    || "Unknown"}() { [native code] }`
-  )
-})
-
-f(s(Null, Null.prototype = c(null)))
-Null.prototype.constructor = Null
+setPrototypeOf(Null, Null.prototype = create(null))

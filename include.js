@@ -19,22 +19,22 @@ export const {
 } = Reflect
 
 export function isDefined(value) {
-  return value !== null && value !== undefined
+  return (value !== null) && (value !== undefined)
 }
 
 /** @return {value is (...args: unknown[]) => unknown} */
 export function isFunction(value) {
-  return typeof value === "function"
+  return (typeof value) === "function"
 }
 
 /** @return {value is object} */
 export function isObject(value) {
-  return value !== null && typeof value === "object"
+  return (value !== null) && ((typeof value) === "object")
 }
 
 /** @return {value is number} */
 export function isNumber(value) {
-  return isFinite(value) && typeof value === "number"
+  return isFinite(value) && ((typeof value) === "number")
 }
 
 /** @return {value is Iterable} */
@@ -58,11 +58,9 @@ function defaultValidatorError(value) {
  * @return {boolean}
  */
 export function validateType(type, source, err) {
-  if (
-    typeof source === type
-    || isFunction(type)
-    && type(source)
-  ) return true
+  if (((typeof source) === type) || (isFunction(type) && type(source))) {
+    return true
+  }
 
   if (isFunction(err)) throw err()
 
@@ -74,20 +72,17 @@ export function validateType(type, source, err) {
  * @param {...unknown} sources
  */
 validateType.any = function (type, ...sources) {
-  if (typeof type === "string") {
-    type = (value) => (typeof value === type)
+  if ((typeof type) === "string") {
+    type = ((value) => ((typeof value) === type))
   }
-  if (!isFunction(type)) {
-    throw new TypeError("Required a function or string")
-  }
+
+  validateType("function", type)
 
   let i = sources.length
 
-  while (--i) {
-    if (!type(sources[i])) {
-      defaultValidatorError(sources[i])
-    }
-  }
+  while (--i) (validateType(type, sources[i], type))
+
+  return true
 }
 
 /**
@@ -98,24 +93,7 @@ validateType.any = function (type, ...sources) {
 export function makeValidator(exec, onerror) {
   if (!isFunction(onerror)) onerror = defaultValidatorError
 
-  let out
-  switch (typeof exec) {
-    case "function": {
-      out = function (value) {
-        if (!exec(value)) throw onerror(value, exec)
-      }
-      break
-    }
-    case "string": {
-      out = function (value) {
-        if (typeof value !== exec) throw onerror(value, out)
-      }
-      break
-    }
-    default: {
-      throw new TypeError("Required a function or string.")
-    }
-  }
+  const out = (value) => (validateType(exec, value, onerror))
 
   out.any = function (...values) { each(values, out, false) }
 
@@ -134,15 +112,14 @@ export function each(arr, fn, config) {
   const {
     stoppable = false,
     ctx = null,
-  } = config || plainObj
+  } = (config || plainObj)
 
   let index = 0
 
   for (const item of arr) {
-    if (
-      fn.call(ctx, item, index++, arr) === false
-      && stoppable
-    ) break
+    if ((fn.call(ctx, item, index++, arr) === false) && stoppable) {
+      break
+    }
   }
 
   return arr
@@ -153,21 +130,21 @@ export function each(arr, fn, config) {
  * @param {(value: unknown, index: number, array: arr) => void} fn
  * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
-each.reverse = function (arr, fn, config) {
+each.reverse = function (arr, fn, config = plainObj) {
   validateType(isArray, arr)
   validateType(isFunction, fn)
 
   const {
     stoppable = false,
     ctx = null,
-  } = config || plainObj
+  } = (config || plainObj)
 
   let index = arr.length
+
   while (index--) {
-    if (
-      fn.call(ctx, arr[index], index, arr) === false
-      && stoppable
-    ) break
+    if ((fn.call(ctx, arr[index], index, arr) === false) && stoppable) {
+      break
+    }
   }
 
   return arr
@@ -185,7 +162,7 @@ each.obj = function (obj, fn, config) {
   const {
     stoppable = false,
     ctx = null,
-  } = config || plainObj
+  } = (config || plainObj)
 
   const keys = Object.keys(obj)
 
@@ -194,7 +171,7 @@ each.obj = function (obj, fn, config) {
   while (i--) {
     if (
       has.call(obj, k = keys[i])
-      && fn.call(ctx, obj[k], k, obj) === false
+      && (fn.call(ctx, obj[k], k, obj) === false)
       && stoppable
     ) break
   }

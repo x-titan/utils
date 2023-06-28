@@ -6,9 +6,7 @@ import {
 } from "../include.js"
 
 export default function binder(obj, paramList, thisArg = obj) {
-  validateType(isExt, obj, () => (
-    new TypeError("First argument is not a extensible")
-  ))
+  validateType(isExt, obj)
 
   each(paramList, (name) => {
     if (typeof name === "string" && isFunction(obj[name])) {

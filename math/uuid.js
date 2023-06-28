@@ -1,6 +1,9 @@
+import { validateType } from "../include.js"
+import { is } from "../types/index.js"
 import { randInt } from "./random.js"
 
 const uuidList = new Set()
+const { fromCharCode } = String
 const UPPER_A = 65
 const UPPER_Z = 90
 const LOWER_A = 97
@@ -20,7 +23,7 @@ const LETTERS = [
 ]
 
 function randChar_(start, end) {
-  return String.fromCharCode(randInt(start, end))
+  return fromCharCode(randInt(start, end))
 }
 
 function randUpperLetter() {
@@ -49,9 +52,7 @@ function randLetter() {
  * @return {string}
  */
 export default function UUID(len) {
-  if (len <= 0) {
-    throw new Error("Len not be equal a positive value")
-  }
+  validateType(is.uint, len)
 
   const _len = len
   let id = ""

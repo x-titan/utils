@@ -1,10 +1,9 @@
 import { assign } from '../include.js'
 
 /**
- * @param {unknown} obj
- * @param  {...unknown} sources
- * @return {{} & obj & ...sources}
+ * @param  {unknown} sources
+ * @return {{} & sources}
  */
-export default function mixin(obj, ...sources) {
-  return assign({}, obj, ...sources)
+export default function mixin(...sources) {
+  return assign({}, ...sources)
 }

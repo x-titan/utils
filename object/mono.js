@@ -17,21 +17,10 @@ const monoError = (name) => {
  */
 class Mono {
   /** @param {() => throw} [onerror] Calling on error */
-  constructor(onerror) {
-    const target = new.target
-
-    if (ctorList.has(target)) {
-      return (
-        isFunction(onerror)
-          ? onerror()
-          : monoError(target.name)
-      )
-    }
-    ctorList.add(target)
-  }
+  constructor(onerror) { Mono.mixin(new.target, onerror) }
 
   /** @param {new unknown} target */
-  static has(target) { return ctorList.has(target) }
+  static has(target) { return constructorList.has(target) }
 
   /**
    * Сhecks whether this item is in the list and returns the result.
@@ -49,7 +38,7 @@ class Mono {
 
     const cons = target.constructor
 
-    if (this.has(cons)) {
+    if (constructorList.has(cons)) {
       return (
         isFunction(onerror)
           ? onerror()
@@ -57,7 +46,7 @@ class Mono {
       )
     }
 
-    ctorList.add(cons)
+    constructorList.add(cons)
     return target
   }
 
@@ -66,32 +55,19 @@ class Mono {
    * @param {() => throw} onerror
    * @return {target}
    */
-  static mono(target, onerror) {
+  static extend(target, onerror) {
     validateType(isFunction, target)
 
     const _ = function (...args) {
       return Mono.mixin(new target(...args), onerror)
     }
 
-    try {
-      if (!target.prototype) {
-        Object.setPrototypeOf(target, target.prototype = {})
-      }
+    Object.setPrototypeOf(_, _.prototype = target.prototype)
 
-      target.constructor = target.prototype.constructor = _
-      Object.setPrototypeOf(_, _.prototype = target.prototype || {})
-    } catch (e) {
-      console.warn(
-        "Mono error. Failed mixining class `"
-        + target.name + "` to `Mono`"
-      )
-      console.trace(e)
-    }
-
-    return _.constructor = _.prototype.constructor = _
+    return _.constructor = _
   }
 }
 
-const ctorList = new Set([Mono])
+const constructorList = new Set([Mono])
 
 export default Mono

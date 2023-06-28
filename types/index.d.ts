@@ -2,7 +2,7 @@ interface Class<T = unknown> {
   new(...args: any[]): T
 }
 
-declare namespace is {
+export declare namespace is {
   function empty(value: unknown): value is undefined | null
   function null_(value: unknown): value is null
   function undefined(value: unknown): value is undefined
@@ -26,7 +26,7 @@ declare namespace is {
   function error(value: unknown): value is Error
   
   function int(value: unknown): value is number
-  function decimal(value: unknown): value is number
+  function uint(value: unknown): value is number
   function float(value: unknown): value is number
   function positive(value: unknown): value is number
   function negative(value: unknown): value is number
@@ -34,11 +34,13 @@ declare namespace is {
   function infinite(value: unknown): boolean
   function safeInt(value: unknown): value is number
   function nan(value: unknown): boolean
-  function NaN(value: unknown): boolean
   
+  function arr<T>(value: unknown): value is T[]
   function array<T>(value: unknown): value is T[]
   function arrayLike<T>(value: unknown): value is T[]
   function iterable<T>(value: unknown): value is Iterable<T>
+  function extensible(value: unknown): boolean
+  function ext(value: unknown): boolean
   
   function makeValidator(
     exec: (value: unknown) => boolean,
@@ -50,5 +52,3 @@ declare namespace is {
     ...list: unknown[]
   ): boolean
 }
-
-export default is

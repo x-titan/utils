@@ -7,7 +7,6 @@ import {
   isIterable,
   isNumber,
   isObject,
-  makeValidator,
   toString,
   validateType,
 } from "../include.js"
@@ -34,28 +33,13 @@ function getConstructorName(value) {
   )
 }
 
-/** @param {new unknown} value */
-function canNew(value) {
-  if (isFunction(value)) try {
-    console.warn("Trying call `function` with `new`")
-    new value
-    return true
-  } catch (e) {
-    if (!e.message.includes("is not a constructor")) {
-      console.error(e)
-    }
-  }
-  return false
-}
-
 function any(exec, ...list) {
   validateType(isFunction, exec)
 
   let i = list.length
-  if (i === 0) return false
 
-  while (i--) {
-    if (!exec(list[i])) return false
+  while (i !== 0) {
+    if (!exec(list[--i])) return false
   }
 
   return true
@@ -64,20 +48,9 @@ function any(exec, ...list) {
 export function is(value) {
   if (value === undefined) return "undefined"
   if (value === null) return "null"
-
   if (_.array(value)) return "array"
-  if (_.buffer(value)) return "buffer"
-  if (_.error(value)) return "error"
-  if (_.args(value)) return "arguments"
 
-  const t = typeof value
-
-  if (t === "function") {
-    if (_.asyncFunc(value)) return "asyncfunction"
-    if (_.genFunc(value)) return "generatorfunction"
-  }
-
-  return t
+  return typeof value
 }
 
 const _ = {
@@ -86,10 +59,10 @@ const _ = {
   undefined: (value) => (value === undefined),
   defined: isDefined,
   zeroValue: (value) => (
-    _.empty(value)
+    !isDefined(value)
     || value === 0
-    || _.arrayLike(value)
-    && value.length === 0
+    || (_.arrayLike(value)
+      && value.length === 0)
   ),
   nonZeroValue: (value) => (!_.zeroValue(value)),
 
@@ -101,6 +74,7 @@ const _ = {
   bool: (value) => (value === !!value),
 
   int: (value) => (isNumber(value) && value % 1 === 0),
+  uint: (value) => (isNumber(value) && value > -1),
   float: (value) => (isNumber(value) && value % 1 !== 0),
   positive: (value) => (isNumber(value) && value > 0),
   negative: (value) => (isNumber(value) && value < 0),
@@ -110,10 +84,10 @@ const _ = {
   nan: (value) => (value !== value),
 
   plainObj: (value) => (
-    _.obj(value)
-    && getObjectName(value) === "Object"
-    && (value = value.constructor) === null
-    || value === objCtor
+    isObject(value)
+    && (getObjectName(value) === "Object")
+    && ((value = value.constructor) === null)
+    || (value === objCtor)
   ),
 
   buffer: (value) => (
@@ -128,9 +102,8 @@ const _ = {
   ),
 
   arrayLike: (value) => (
-    !_.empty(value)
-    && _.int(value.length)
-    && value.length > -1
+    isDefined(value)
+    && _.uint(value.length)
   ),
 
   args: (value) => (
@@ -151,6 +124,7 @@ const _ = {
   arr: isArray,
   array: isArray,
   iterable: isIterable,
+  ext: isExt,
   extensible: isExt,
   error: (value) => (value instanceof Error),
 }
@@ -162,14 +136,8 @@ assign(is, _, {
   null_: _.null,
   undefined_: _.undefined,
   class_: _.class,
-  NaN: _.nan,
   arguments_: _.args,
-  getObjectName,
-  getConstructorName,
-  isOfType,
   any,
-  canNew,
-  makeValidator,
   toString,
 })
 

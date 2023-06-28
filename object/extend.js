@@ -4,8 +4,6 @@ import {
   getDesc,
   has,
   isExt,
-  isFunction,
-  isObject,
   validateType,
 } from "../include.js"
 
@@ -17,11 +15,9 @@ extend.pro = function (obj, ...sources) {
   validateType(isExt, obj)
 
   for (const o of sources) {
-    if (isObject(o) || isFunction(o)) {
-      for (const key in o) {
-        if (has.call(o, key)) {
-          define(obj, key, getDesc(o, key))
-        }
+    for (const key in o) {
+      if (has.call(o, key)) {
+        define(obj, key, getDesc(o, key))
       }
     }
   }

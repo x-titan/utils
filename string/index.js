@@ -120,12 +120,12 @@ assign(String.prototype, {
   toPascalCase(join = false) {
     return toPascalCase(this, join)
   },
-  toUpperCase(join = false, separator = "") {
-    return toUpperCase(this, join, separator)
-  },
-  toLowerCase(join = false, separator = "") {
-    return toLowerCase(this, join, separator)
-  },
+  // toUpperCase(join = false, separator = "") {
+  //   return toUpperCase(this, join, separator)
+  // },
+  // toLowerCase(join = false, separator = "") {
+  //   return toLowerCase(this, join, separator)
+  // },
   proxyToLowerCase,
   proxyToUpperCase,
 })

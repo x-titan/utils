@@ -1,60 +1,94 @@
-import { isNumber } from "../include.js"
+import { isNumber, validateType } from "../include.js";
 
-const { freeze } = Object
+const { iterator } = Symbol
 
-function baseRange(start, stop, step) {
-  const self = {
-    [Symbol.iterator]() {
-      const len = stop
-      let i = start - step
+function forward(i, to) { return i < to }
 
-      const iterable = {
-        next() {
-          const done = iterable.isDone
-          return { done, value: (done ? null : i += step) }
-        },
+function backward(i, to) { return i > to }
 
-        get isDone() {
-          const _i = i + step
-          return !((step > 0) ?
-            _i < len : _i > len)
-        },
+function getDirection(sign) { return (sign > 0 ? forward : backward) }
 
-        get self() { return _range }
-      }
+export class Range {
+  #from = 0
+  #to = 0
 
-      freeze(iterable)
-      return iterable
-    },
-
-    start,
-    stop,
-    step
+  /**
+   * @param {number} [from]
+   * @param {number} [to]
+   */
+  constructor(from, to) {
+    this.from = from
+    this.to = to
   }
 
-  freeze(self)
-  return self
+  [iterator]() {
+    const from = this.from
+    const to = this.to
+    const sign = Math.sign(to - from)
+    const canIterate = getDirection(sign)
+
+    let i = from - sign
+
+    return {
+      next() {
+        const index = i + sign
+        const can = canIterate(index, to)
+
+        if (can) { i = index }
+
+        return {
+          done: !can,
+          value: i,
+        }
+      }
+    }
+  }
+
+  get length() {
+    const len = this.to - this.from
+    return Math.sign(len) * len
+  }
+
+  set from(num) { if (isNumber(num)) this.#from = num }
+  get from() { return this.#from }
+
+  set to(num) { if (isNumber(num)) this.#to = num }
+  get to() { return this.#to }
 }
 
-/** 
- * @param {number} [start] 
- * @param {number} [stop] 
- * @param {number} [step] 
+/**
+ * @param {number} from
+ * @param {number} [to]
  */
-export default function range(start, stop, step) {
-  if (step === 0) throw new Error("Step not a zero value")
-  if (!isNumber(start)) start = 0
-  if (!isNumber(stop)) {
-    stop = start || 1
-    start = 0
-  }
-  if (!isNumber(step)) step = ((start > stop) ? -1 : 1)
-  if (
-    (start > stop && step > 0)
-    || (start < stop && step < 0)
-  ) throw new Error("Reverse step error")
+export function range(from, to) {
+  validateType(isNumber, from)
 
-  return baseRange(start, stop, step)
+  if (!isNumber(to)) {
+    to = from
+    from = 0
+  }
+
+  return new Range(from, to)
+}
+
+/**
+ * @param {number} from
+ * @param {number} [to]
+ * @param {(index:number, from:number, to:number) => (number)} [push]
+ */
+range.array = function (from, to, push) {
+  const arr = []
+
+  if (!isNumber(to)) {
+    to = from
+    from = 0
+  }
+
+  for (let i = from; i < to; i++) {
+    arr.push(push?.call(push, i, from, to)  || i)
+  }
+
+  return arr
 }
 
 Array.range = range
