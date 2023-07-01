@@ -54,15 +54,15 @@ export function is(value) {
 }
 
 const _ = {
-  empty: (value) => (value === undefined || value === null),
+  empty: (value) => ((value === undefined) || (value === null)),
   null: (value) => (value === null),
   undefined: (value) => (value === undefined),
   defined: isDefined,
   zeroValue: (value) => (
     !isDefined(value)
-    || value === 0
+    || (value === 0)
     || (_.arrayLike(value)
-      && value.length === 0)
+      && (value.length === 0))
   ),
   nonZeroValue: (value) => (!_.zeroValue(value)),
 
@@ -73,13 +73,14 @@ const _ = {
   symbol: isOfType("symbol"),
   bool: (value) => (value === !!value),
 
-  int: (value) => (isNumber(value) && value % 1 === 0),
-  uint: (value) => (isNumber(value) && value > -1),
-  float: (value) => (isNumber(value) && value % 1 !== 0),
-  positive: (value) => (isNumber(value) && value > 0),
-  negative: (value) => (isNumber(value) && value < 0),
+  int: (value) => (isNumber(value) && ((value % 1) === 0)),
+  uint: (value) => (_.int(value) && (value >= 0)),
+  float: (value) => (isNumber(value) && ((value % 1) !== 0)),
+  unsigned: (value) => (isNumber(value) && (value >= 0)),
+  positive: (value) => (isNumber(value) && (value > 0)),
+  negative: (value) => (isNumber(value) && (value < 0)),
   finite: isFinite,
-  infinity: (value) => (value === Infinity || value || -Infinity),
+  infinity: (value) => ((value === Infinity) || (value === -Infinity)),
   safeInt: (value) => (isNumber(value) && isSafeInteger(value)),
   nan: (value) => (value !== value),
 

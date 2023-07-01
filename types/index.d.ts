@@ -25,10 +25,47 @@ export declare namespace is {
   function class_(value: unknown): value is Class<unknown>
   function error(value: unknown): value is Error
   
+  /**
+   * If `value` is integer (..., -1, 0, 1, 2, ...) return `true`
+   * @param value unknown
+   */
   function int(value: unknown): value is number
+  /**
+   * Return sign of `value`.
+   * If `value` greater or equals to zero return `true` and `value` is integer.
+   * 
+   * Return `(value >= 0) && ((value % 1) === 0)`
+   * @param value unknown
+   */
   function uint(value: unknown): value is number
+  /**
+   * If `value` is non-integer (..., -1, 0, 1, 2, ...) return `true`
+   * @param value unknown
+   */
   function float(value: unknown): value is number
+  /**
+   * Return sign of `value`.
+   * If `value` greater or equals to zero return `true`
+   * 
+   * Return `value >= 0`
+   * @param value unknown
+   */
+  function unsigned(value: unknown): value is number
+  /**
+   * Return sign of `value`.
+   * If `value` greater than zero return `true`
+   * 
+   * Return `value > 0`
+   * @param value unknown
+   */
   function positive(value: unknown): value is number
+  /**
+   * Return sign of `value`.
+   * If `value` less than zero return `true`
+   * 
+   * Return `value < 0`
+   * @param value unknown
+   */
   function negative(value: unknown): value is number
   function finite(value: unknown): value is number
   function infinite(value: unknown): boolean
@@ -40,6 +77,10 @@ export declare namespace is {
   function arrayLike<T>(value: unknown): value is T[]
   function iterable<T>(value: unknown): value is Iterable<T>
   function extensible(value: unknown): boolean
+  /**
+   * Like `is.extensible(value)`
+   * @param value unknown
+   */
   function ext(value: unknown): boolean
   
   function makeValidator(
