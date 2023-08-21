@@ -1,4 +1,4 @@
-import { validateType } from "../include.js"
+import { validate } from "../include.js"
 import { is } from "../types/index.js"
 import { randInt } from "./random.js"
 
@@ -52,7 +52,7 @@ function randLetter() {
  * @return {string}
  */
 export default function UUID(len) {
-  validateType(is.uint, len)
+  validate(is.uint, len)
 
   const _len = len
   let id = ""

@@ -57,9 +57,9 @@ function defaultValidatorError(value) {
  * @param {() => Error} err
  * @return {boolean}
  */
-export function validateType(type, source, err) {
+export function validate(type, source, err) {
   if (((typeof source) === type) || (isFunction(type) && type(source))) {
-    return true
+    return source
   }
 
   if (isFunction(err)) throw err()
@@ -71,19 +71,21 @@ export function validateType(type, source, err) {
  * @param {string | (value: unknown) => boolean} type
  * @param {...unknown} sources
  */
-validateType.any = function (type, ...sources) {
+validate.any = function (type, ...sources) {
   if ((typeof type) === "string") {
     type = ((value) => ((typeof value) === type))
   }
 
-  validateType("function", type)
+  validate("function", type)
 
   let i = sources.length
 
-  while (--i) (validateType(type, sources[i], type))
+  while (--i) (validate(type, sources[i], type))
 
   return true
 }
+
+export const validateType = validate
 
 /**
  * @param {(value: unknown) => boolean} exec
@@ -93,7 +95,7 @@ validateType.any = function (type, ...sources) {
 export function makeValidator(exec, onerror) {
   if (!isFunction(onerror)) onerror = defaultValidatorError
 
-  const out = (value) => (validateType(exec, value, onerror))
+  const out = (value) => (validate(exec, value, onerror))
 
   out.any = function (...values) { each(values, out, false) }
 
@@ -106,8 +108,8 @@ export function makeValidator(exec, onerror) {
  * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
 export function each(arr, fn, config) {
-  validateType(isIterable, arr)
-  validateType(isFunction, fn)
+  validate(isIterable, arr)
+  validate(isFunction, fn)
 
   const {
     stoppable = false,
@@ -131,8 +133,8 @@ export function each(arr, fn, config) {
  * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
 each.reverse = function (arr, fn, config = plainObj) {
-  validateType(isArray, arr)
-  validateType(isFunction, fn)
+  validate(isArray, arr)
+  validate(isFunction, fn)
 
   const {
     stoppable = false,
@@ -156,8 +158,8 @@ each.reverse = function (arr, fn, config = plainObj) {
  * @param {{stoppable: ?boolean, ?ctx}} [config]
  */
 each.obj = function (obj, fn, config) {
-  validateType(isDefined, obj)
-  validateType(isFunction, fn)
+  validate(isDefined, obj)
+  validate(isFunction, fn)
 
   const {
     stoppable = false,

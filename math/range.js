@@ -1,4 +1,4 @@
-import { isNumber, validateType } from "../include.js";
+import { isNumber, validate } from "../include.js";
 
 const { iterator } = Symbol
 
@@ -61,7 +61,7 @@ export class Range {
  * @param {number} [to]
  */
 export function range(from, to) {
-  validateType(isNumber, from)
+  validate(isNumber, from)
 
   if (!isNumber(to)) {
     to = from

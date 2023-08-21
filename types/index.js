@@ -8,7 +8,7 @@ import {
   isNumber,
   isObject,
   toString,
-  validateType,
+  validate,
 } from "../include.js"
 
 const objCtor = {}.constructor
@@ -34,7 +34,7 @@ function getConstructorName(value) {
 }
 
 function any(exec, ...list) {
-  validateType(isFunction, exec)
+  validate(isFunction, exec)
 
   let i = list.length
 

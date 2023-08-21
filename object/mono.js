@@ -1,4 +1,4 @@
-import { isFunction, isObject, validateType } from "../include.js"
+import { isFunction, isObject, validate } from "../include.js"
 
 const monoError = (name) => {
   throw new Error(
@@ -34,7 +34,7 @@ class Mono {
    * @param {() => throw} onerror Calling on error
    */
   static mixin(target, onerror) {
-    validateType(isObject, target)
+    validate(isObject, target)
 
     const cons = target.constructor
 
@@ -56,7 +56,7 @@ class Mono {
    * @return {target}
    */
   static extend(target, onerror) {
-    validateType(isFunction, target)
+    validate(isFunction, target)
 
     const _ = function (...args) {
       return Mono.mixin(new target(...args), onerror)

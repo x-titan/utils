@@ -1,4 +1,4 @@
-import { validateType } from "../include.js"
+import { validate } from "../include.js"
 
 const PI = Math.PI
 const toDegree = 180 / PI
@@ -11,7 +11,7 @@ const toRadian = PI / 180
  * @return {number} degree 180°
  */
 export function radianToDegree(radian) {
-  validateType("number", radian)
+  validate("number", radian)
   return radian * toDegree
 }
 
@@ -22,6 +22,6 @@ export function radianToDegree(radian) {
  * @return {number} radian π
  */
 export function degreeToRadian(degree) {
-  validateType("number", degree)
+  validate("number", degree)
   return degree * toRadian
 }

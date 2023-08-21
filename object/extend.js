@@ -4,7 +4,7 @@ import {
   getDesc,
   has,
   isExt,
-  validateType,
+  validate,
 } from "../include.js"
 
 export default function extend(obj, ...sources) {
@@ -12,7 +12,7 @@ export default function extend(obj, ...sources) {
 }
 
 extend.pro = function (obj, ...sources) {
-  validateType(isExt, obj)
+  validate(isExt, obj)
 
   for (const o of sources) {
     for (const key in o) {
