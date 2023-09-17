@@ -139,6 +139,7 @@ assign(is, _, {
   class_: _.class,
   arguments_: _.args,
   any,
+  err: _.error,
   toString,
 })
 
