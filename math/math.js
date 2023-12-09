@@ -1,9 +1,8 @@
 import { isNumber, makeValidator } from "../include.js"
 
-const { EPSILON } = Number
+const { EPSILON, isInteger } = Number
 const ONE_EPS = 1 - EPSILON
 const { PI, E, SQRT2, sqrt, abs } = Math
-const { isInteger } = Number
 
 export const CONST = {
   /** @type {3.1415926535897932} */
