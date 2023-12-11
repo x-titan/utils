@@ -5,8 +5,9 @@ const toDegree = 180 / PI
 const toRadian = PI / 180
 
 /**
- * π/2 → 90°  
- * π → 180°
+ * π / 2 → 90° [3.14 / 2]
+ * 
+ * π → 180° [3.14]
  * @param {number} radian (π)
  * @return {number} degree 180°
  */
@@ -16,8 +17,9 @@ export function radianToDegree(radian) {
 }
 
 /**
- * 90° → π/2  
- * 180° → π
+ * 90° → π / 2 [3.14 / 2]
+ * 
+ * 180° → π [3.14]
  * @param {number} degree (180°)
  * @return {number} radian π
  */

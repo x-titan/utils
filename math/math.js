@@ -52,6 +52,7 @@ export function normalizer(num) {
 }
 
 /**
+ * Greatest common divisor
  * @param {number} a
  * @param {number} b
  */
@@ -60,16 +61,10 @@ export function gcd(a, b) {
   a = abs(a)
   b = abs(b)
 
-  if (b > a) {
-    const t = a
-    a = b
-    b = t
-  }
+  let i = Math.min(a, b) + 1
 
-  let i = a
-
-  while (i--) {
-    if (isInteger(a / i) && isInteger(b / i)) return i
+  while (--i > 0) {
+    if (isInteger(a / i) && isInteger(b / i)) { return i }
   }
 
   return 1
@@ -136,35 +131,39 @@ export function allRatio(x, y) {
  * @param {number} min
  * @param {number} max
  */
-export function constraints(value, min, max) {
+export function clamp(value, min, max) {
   validateNumber.any(value, min, max)
 
-  if (value < min) return min
-  if (value > max) return max
+  if (min > max) {
+    min = min + max
+    max = min - max
+    min = min - max
+  }
+
+  if (value < min) { value = min }
+  if (value > max) { value = max }
 
   return value
 }
 
 /**
- * @param {number} inmin
- * @param {number} inmax
- * @param {number} outmin
- * @param {number} outmax
+ * @param {number} value
+ * @param {number} fromLow
+ * @param {number} fromHigh
+ * @param {number} toLow
+ * @param {number} toHigh
  */
-export function minmax(inmin, inmax, outmin, outmax) {
-  validateNumber.any(inmin, inmax, outmin, outmax)
+export function map(value, fromLow, fromHigh, toLow, toHigh) {
+  validateNumber.any(value, fromLow, fromHigh, toLow, toHigh)
 
-  if (inmin > inmax || outmin > outmax) {
+  const a = fromHigh - fromLow
+  const b = toHigh - toLow
+
+  if (a === 0 || b === 0) {
     throw new Error("Minmax error")
   }
 
-  return (value = inmin) => {
-    if (!is.num(value)) value = inmin
-    if (value < inmin) value = inmin
-    if (value > inmax) value = inmax
-
-    return outmin + ((outmax - outmin) * (value - inmin) / inmax)
-  }
+  return (clamp(value, 0, a) * (b / a)) + toLow
 }
 
 Number.validateNumber = validateNumber
@@ -172,9 +171,9 @@ Number.validateInteger = validateInteger
 Number.normalizer = normalizer
 Number.isNumber = isNumber
 
-Math.minmax = minmax
+Math.clamp = clamp
 Math.gcd = gcd
 Math.ratio = ratio
 Math.allRatio = allRatio
-Math.constraints = constraints
+Math.map = map
 Math.equals = equals
