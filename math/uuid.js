@@ -10,12 +10,12 @@ const LOWER_A = 97
 const LOWER_Z = 122
 const DIGIT_0 = 48
 const DIGIT_9 = 57
-const CHAR = [
+const SYMBOL = [
   { start: 42, end: 47 },
   { start: 60, end: 64 },
   { start: 91, end: 95 }
 ]
-const LETTERS = [
+const CHARS = [
   randSymbolChar,
   randUpperLetter,
   randLowerLetter,
@@ -39,12 +39,12 @@ function randDigitChar() {
 }
 
 function randSymbolChar() {
-  const char = CHAR[randInt(0, 2)]
+  const char = SYMBOL[randInt(0, 2)]
   return randChar_(char.start, char.end)
 }
 
 function randLetter() {
-  return LETTERS[randInt(0, 3)]()
+  return CHARS[randInt(0, 3)]()
 }
 
 /** 
