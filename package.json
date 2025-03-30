@@ -1,11 +1,14 @@
 {
-  "name": "xtitan_utils",
-  "version": "0.1.0",
+  "name": "xtitan-utils",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "jest": {
+    "transform": {}
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,7 @@
     "url": "https://github.com/x-titan/utils/issues"
   },
   "homepage": "https://github.com/x-titan/utils#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }

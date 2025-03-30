@@ -1,4 +1,5 @@
-import { isNumber, makeValidator } from "../include.js"
+import { isNumber } from "../include.js"
+import { makeValidator } from "../validate.js"
 
 const { isInteger } = Number
 const { PI, sqrt, abs } = Math
@@ -78,7 +79,6 @@ export function ratio(a, b, c, d) {
  * @param {number} y
  */
 export function allRatio(x, y) {
-  validateNumber.any(x, y)
   x = abs(x)
   y = abs(y)
 

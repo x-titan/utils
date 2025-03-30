@@ -1,12 +1,12 @@
 import {
   each,
-  isExt,
+  isExtensible,
   isFunction,
-  validate,
 } from "../include.js"
+import { validate } from "../validate.js"
 
 export default function binder(obj, paramList, thisArg = obj) {
-  validate(isExt, obj)
+  validate(isExtensible, obj)
 
   each(paramList, (name) => {
     if (typeof name === "string" && isFunction(obj[name])) {

@@ -3,16 +3,17 @@ import {
   define,
   getDesc,
   has,
-  isExt,
-  validate,
+  isExtensible,
+  
 } from "../include.js"
+import { validate } from "../validate.js"
 
 export default function extend(obj, ...sources) {
   return assign(obj, ...sources)
 }
 
 extend.pro = function (obj, ...sources) {
-  validate(isExt, obj)
+  validate(isExtensible, obj)
 
   for (const o of sources) {
     for (const key in o) {

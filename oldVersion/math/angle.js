@@ -1,4 +1,4 @@
-import { validate } from "../include.js"
+import { validate } from "../validate.js"
 
 const PI = Math.PI
 const toDegree = 180 / PI

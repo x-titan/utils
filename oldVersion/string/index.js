@@ -1,4 +1,5 @@
-import { assign, makeValidator } from "../include.js"
+import { assign } from "../include.js"
+import { makeValidator } from "../validate.js"
 
 const proxyToUpperCase = String.prototype.toUpperCase
 const proxyToLowerCase = String.prototype.toLowerCase

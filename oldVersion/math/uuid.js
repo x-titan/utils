@@ -1,4 +1,4 @@
-import { validate } from "../include.js"
+import { validate } from "../validate.js"
 import { is } from "../types/index.js"
 import { randInt } from "./random.js"
 

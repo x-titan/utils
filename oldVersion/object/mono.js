@@ -1,4 +1,5 @@
-import { isFunction, isObject, validate } from "../include.js"
+import { isFunction, isObject, } from "../include.js"
+import { validate } from "../validate.js"
 
 const monoError = (name) => {
   throw new Error(

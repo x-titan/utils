@@ -1,4 +1,5 @@
-import { assign, isNumber, makeValidator } from "../include.js"
+import { assign, isNumber } from "../include.js"
+import { makeValidator } from "../validate.js"
 
 const validateNumber = makeValidator(isNumber)
 

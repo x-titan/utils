@@ -1,4 +1,5 @@
-import { isNumber, validate } from "../include.js";
+import { isNumber } from "../include.js"
+import { validate } from "../validate.js"
 
 const { iterator } = Symbol
 
@@ -21,26 +22,16 @@ export class Range {
     this.to = to
   }
 
-  [iterator]() {
-    const from = this.from
-    const to = this.to
-    const sign = Math.sign(to - from)
-    const canIterate = getDirection(sign)
+  *[iterator]() {
+    var { from, to } = this
+    var sign = Math.sign(to - from)
+    var direction = getDirection(sign)
 
-    let i = from - sign
+    let i = from
 
-    return {
-      next() {
-        const index = i + sign
-        const can = canIterate(index, to)
-
-        if (can) { i = index }
-
-        return {
-          done: !can,
-          value: i,
-        }
-      }
+    while (direction(i, to)) {
+      yield i
+      i = i + sign
     }
   }
 
@@ -74,18 +65,31 @@ export function range(from, to) {
 /**
  * @param {number} from
  * @param {number} [to]
- * @param {(index:number, from:number, to:number) => (number)} [push]
+ * @param {number} [step]
  */
-range.array = function (from, to, push) {
-  const arr = []
-
+range.array = function (from, to, step) {
   if (!isNumber(to)) {
-    to = from
+    to = Math.ceil(from)
     from = 0
   }
 
-  for (let i = from; i < to; i++) {
-    arr.push(push?.call(push, i, from, to)  || i)
+  if (!isNumber(step)) {
+    step = 1
+  }
+
+  if (step === 0) {
+    throw new RangeError("Step cant be a Zero")
+  }
+
+  step = Math.abs(step)
+  var arr = []
+  var sign = Math.sign(to - from)
+  var direction = getDirection(sign)
+  var i = from
+
+  while (direction(i, to)) {
+    arr.push(i)
+    i = i + (step * sign)
   }
 
   return arr
