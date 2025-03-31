@@ -27,7 +27,7 @@ export function equals(a, b) {
  * @param {number} b
  */
 export function gcd(a, b) {
-  validateNumber.any(a, b)
+  // validateNumber.any(a, b)
   a = abs(a)
   b = abs(b)
 
@@ -47,7 +47,8 @@ export function gcd(a, b) {
  * @param {number} [d]
  */
 export function ratio(a, b, c, d) {
-  validateNumber.any(a, b)
+  console.log(validateNumber)
+  // validateNumber.any(a, b)
   a = abs(a)
   b = abs(b)
 

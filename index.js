@@ -1,6 +1,3 @@
-import { gcd } from "./src/index.js"
-import "./test/index.test.js"
-
 /**
  * @x-titan
  * 
