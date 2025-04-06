@@ -26,7 +26,6 @@ export default class Random {
   /**
    * @param {number} min
    * @param {number} max
-   * @return {number}
    */
   next(min = 0, max = 1) {
     var { min, max } = minmax(min, max)
@@ -36,7 +35,6 @@ export default class Random {
   /**
    * @param {number} min
    * @param {number} max
-   * @return {number}
    */
   nextInt(min = 0, max = 1) {
     var { min, max } = minmax(min, max)

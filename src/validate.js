@@ -29,7 +29,7 @@ function _toCallback(type) {
  * @param {NativeTypes | typeIsFn} assertion
  * @param {unknown} value
  * @param {string} [message]
- * @throws {TypeError}
+ * @throws {Error}
  */
 export default function validate(assertion, value, message) {
   if (typeof assertion === "string") {
@@ -45,7 +45,7 @@ export default function validate(assertion, value, message) {
 /**
  * @param {NativeTypes | typeIsFn} assertion
  * @param {...unknown} values
- * @throws {TypeError}
+ * @throws {Error}
  */
 validate.every = function (assertion, ...values) {
   if (typeof assertion === "string") {
@@ -66,7 +66,7 @@ validate.some = function (assertion, ...values) { }
 /**
  * @param {NativeTypes | typeIsFn} assertion
  * @param {string} [message]
- * @throws {TypeError}
+ * @throws {Error}
  */
 validate.clone = function (assertion, message) {
   if (typeof assertion === "string") {
@@ -79,11 +79,11 @@ validate.clone = function (assertion, message) {
 
   message = message || "Validation error"
 
-  /** @throws {TypeError} */
+  /** @throws {Error} */
   function validator(value) {
     assert(assertion(value), message)
   }
-  /** @throws {TypeError} */
+  /** @throws {Error} */
   validator.every = function (...values) {
     for (const value of values)
       assert(assertion(value), message)

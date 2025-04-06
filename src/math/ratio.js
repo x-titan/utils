@@ -29,6 +29,7 @@ export function ratio(width, height) {
  */
 export function allRatio(width, height) {
   validateNumber.every(width, height)
+
   let divider = gcd(width, height)
   const arr = [{ x: width, y: height }]
   const aspect_width = width / divider
