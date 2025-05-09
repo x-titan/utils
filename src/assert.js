@@ -1,7 +1,7 @@
 /**
  * @param {boolean} condition
  * @param {string} message
- * @return {void | never}
+ * @return {asserts condition}
  * @throws {Error}
  */
 export default function assert(condition, message) {

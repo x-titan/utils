@@ -29,6 +29,7 @@ function _toCallback(type) {
  * @param {NativeTypes | typeIsFn} assertion
  * @param {unknown} value
  * @param {string} [message]
+ * @return {void | never}
  * @throws {Error}
  */
 export default function validate(assertion, value, message) {
